@@ -15,6 +15,17 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Install PHP (release gate)
+        run: sudo apt-get update && sudo apt-get install -y php-cli
+
+      - name: PHP syntax gate (fail the release on any parse error)
+        run: |
+          set -e
+          find package -name '*.php' -o -name '*.page' | while read -r f; do
+            php -l "$f"
+          done
+          echo "all PHP/.page files pass php -l"
+
       - name: Build package, checksum, and stamp the .plg
         run: |
           python3 scripts/generate-icons.py

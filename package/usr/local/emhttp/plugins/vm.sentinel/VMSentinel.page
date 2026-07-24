@@ -1,84 +1,61 @@
 Menu="OtherSettings"
 Title="VM Sentinel"
 Icon="vm-sentinel.png"
-Tag="shield-halved"
 ---
 <?php
-/* VM Sentinel — Overview page (spec §13.1).
+/* VM Sentinel — single settings page with in-page tabs (spec §13).
    SPDX-License-Identifier: MIT
-   NOTE: [VERIFY] exact .page header fields / Menu nesting on Unraid 7.2. */
+   Consolidated from 5 pages: Unraid's multi-level .page nesting rendered the
+   body blank on 7.2, so all sections live here as JS tab panes (guaranteed to
+   render). Each tab's markup is a small include sharing this page's scope. */
 require_once '/usr/local/emhttp/plugins/vm.sentinel/include/vms-common.php';
-$cfg = vms_read_config();
-$status = json_decode(vms_run('services/diagnostics.sh', ['status']), true) ?: [];
-$inv = vms_inventory();
+$cfg  = vms_read_config();
 $csrf = '';
 if (is_readable('/var/local/emhttp/var.ini')) { $v=@parse_ini_file('/var/local/emhttp/var.ini'); $csrf=$v['csrf_token']??''; }
-
-$running = 0; $healthy = 0; $unhealthy = 0; $nohc = 0;
-foreach ($inv as $uuid => $name) {
-    $st = trim((string)shell_exec('virsh domstate '.escapeshellarg($uuid).' 2>/dev/null'));
-    if ($st === 'running') $running++;
-    $hs = @file_get_contents(VMS_RUN_DIR.'/health/'.$uuid.'.state');
-    if ($hs === false || $hs === '' ) { $nohc++; }
-    elseif (trim($hs) === 'Unhealthy') { $unhealthy++; }
-    elseif (trim($hs) === 'Healthy' || trim($hs) === 'Recovered') { $healthy++; }
-    else { $nohc++; }
-}
+$P = '/usr/local/emhttp/plugins/vm.sentinel/include';
 ?>
 <link rel="stylesheet" href="/plugins/vm.sentinel/vms.css">
 <script>window.VMS_CSRF=<?=json_encode($csrf)?>;</script>
 <script src="/plugins/vm.sentinel/vms.js"></script>
 
+<style>
+.vms-tabs{display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid rgba(128,128,128,.3);margin:4px 0 16px}
+.vms-tabbtn{background:none;border:none;border-bottom:2px solid transparent;padding:8px 14px;cursor:pointer;font-size:1em;opacity:.7}
+.vms-tabbtn.active{opacity:1;font-weight:700;border-bottom-color:#1f6feb}
+.vms-tabpane{display:none}
+.vms-tabpane.active{display:block}
+</style>
+
 <div class="vms-wrap">
-  <?php include __DIR__.'/include/nav.php'; vms_nav('overview'); ?>
-
-  <?php if (!(int)$cfg['monitoring_enabled']): ?>
-    <blockquote class="vms-badge vms-warn" style="display:block;padding:10px 14px;">
-      Monitoring is <b>off</b>. VM Sentinel stays conservative until you enable it in
-      <a href="/Settings/VMSentinelNotify">Notifications</a> after choosing what to watch.
-    </blockquote>
-  <?php endif; ?>
-
-  <div class="vms-cards">
-    <div class="vms-card"><div class="n"><?=count($inv)?></div><div class="l">VMs discovered</div></div>
-    <div class="vms-card"><div class="n"><?=$running?></div><div class="l">Running</div></div>
-    <div class="vms-card"><div class="n"><?=$healthy?></div><div class="l">Healthy</div></div>
-    <div class="vms-card"><div class="n"><?=$unhealthy?></div><div class="l">Unhealthy</div></div>
-    <div class="vms-card"><div class="n"><?=$nohc?></div><div class="l">No health check</div></div>
+  <div class="vms-tabs" id="vmsTabs">
+    <button type="button" class="vms-tabbtn active" data-tab="overview">Overview</button>
+    <button type="button" class="vms-tabbtn" data-tab="vms">VMs</button>
+    <button type="button" class="vms-tabbtn" data-tab="notify">Notifications</button>
+    <button type="button" class="vms-tabbtn" data-tab="history">Event History</button>
+    <button type="button" class="vms-tabbtn" data-tab="diag">Diagnostics</button>
   </div>
 
-  <table class="vms-tbl">
-    <thead><tr><th>VM</th><th>Libvirt state</th><th>Health</th><th>Monitoring</th><th>UUID</th><th></th></tr></thead>
-    <tbody>
-    <?php if (!$inv): ?>
-      <tr><td colspan="6" class="vms-muted">No VMs found. Is VM Manager enabled and the array started?</td></tr>
-    <?php else: foreach ($inv as $uuid => $name):
-        $st = trim((string)shell_exec('virsh domstate '.escapeshellarg($uuid).' 2>/dev/null')) ?: 'unknown';
-        $hs = trim((string)@file_get_contents(VMS_RUN_DIR.'/health/'.$uuid.'.state')) ?: '—';
-        $mon = ((int)$cfg['monitoring_enabled'] && (int)($cfg['vms'][$uuid]['enabled'] ?? 1)) ? 'on' : 'off';
-    ?>
-      <tr>
-        <td><?=h($name)?></td>
-        <td><?=h($st)?></td>
-        <td><?=h($hs)?></td>
-        <td><span class="vms-badge <?=$mon==='on'?'vms-ok':'vms-muted'?>"><?=$mon?></span></td>
-        <td class="vms-uuid"><?=h(substr($uuid,0,8))?>…</td>
-        <td><a href="/Settings/VMSentinelVMs">Configure</a></td>
-      </tr>
-    <?php endforeach; endif; ?>
-    </tbody>
-  </table>
-
-  <h3>Status</h3>
-  <table class="vms-tbl">
-    <tr><td>Plugin version</td><td><?=h($status['plugin_version'] ?? 'unknown')?></td></tr>
-    <tr><td>Processor</td><td><?=h($status['processor'] ?? '?')?></td></tr>
-    <tr><td>Health service</td><td><?=h($status['healthcheck'] ?? '?')?></td></tr>
-    <tr><td>Hook</td><td><?=h($status['hook_status'] ?? '?')?></td></tr>
-    <tr><td>Queue depth</td><td><?=h((string)($status['queue_depth'] ?? 0))?></td></tr>
-    <tr><td>Dropped events</td><td><?=h((string)($status['dropped_events'] ?? 0))?></td></tr>
-  </table>
+  <div class="vms-tabpane active" id="tab-overview"><?php include "$P/tab-overview.php"; ?></div>
+  <div class="vms-tabpane" id="tab-vms"><?php include "$P/tab-vms.php"; ?></div>
+  <div class="vms-tabpane" id="tab-notify"><?php include "$P/tab-notify.php"; ?></div>
+  <div class="vms-tabpane" id="tab-history"><?php include "$P/tab-history.php"; ?></div>
+  <div class="vms-tabpane" id="tab-diag"><?php include "$P/tab-diag.php"; ?></div>
 
   <p class="vms-nonaffiliation">VM Sentinel is an independent community project for Unraid OS and is
   not affiliated with or endorsed by Lime Technology, Inc.</p>
 </div>
+
+<script>
+(function(){
+  var wrap=document.getElementById('vmsTabs'); if(!wrap) return;
+  wrap.querySelectorAll('.vms-tabbtn').forEach(function(b){
+    b.addEventListener('click',function(){
+      wrap.querySelectorAll('.vms-tabbtn').forEach(function(x){x.classList.remove('active')});
+      document.querySelectorAll('.vms-tabpane').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');
+      var p=document.getElementById('tab-'+b.getAttribute('data-tab'));
+      if(p) p.classList.add('active');
+    });
+  });
+})();
+</script>

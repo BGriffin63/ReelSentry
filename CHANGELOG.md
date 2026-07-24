@@ -8,6 +8,17 @@ All notable changes to VM Sentinel are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.1.3] — 2026-07-24
+### Fixed
+- **WebGUI blank page:** the settings UI used 5 separate `.page` files with
+  Unraid multi-level menu nesting (a parent + children via `Menu=`), which on
+  Unraid 7.2 rendered the page body blank (the PHP itself was error-free). The UI
+  is now a **single self-contained page with in-page JS tabs** (Overview / VMs /
+  Notifications / Event History / Diagnostics), which renders reliably. Removed
+  the four child `.page` files and the shared nav include.
+- `build-release.yml` now runs `php -l` on every `.php`/`.page` file and **aborts
+  the release** on any parse error, so a broken WebGUI can never be published.
+
 ## [0.1.2] — 2026-07-24
 ### Fixed
 - **Release tooling:** `release.sh` stamped the package `SHA256` by replacing a
@@ -63,7 +74,8 @@ All notable changes to VM Sentinel are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.3
 [0.1.2]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.2
 [0.1.1]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.1
 [0.1.0]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.0
