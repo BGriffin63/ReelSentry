@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — send a test notification through a provider (spec §10, §11).
+# ReelSentry — send a test notification through a provider (spec §10, §11).
 # SPDX-License-Identifier: MIT
 # Invoked by the WebGUI "Send test notification" buttons via a CSRF-guarded POST.
 #
@@ -7,8 +7,8 @@
 # Prints a single JSON result line; NEVER prints the webhook URL.
 
 set -u
-VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
-VMS_NOTIFYDIR="${VMS_NOTIFYDIR:-/usr/local/emhttp/plugins/vm.sentinel/notifications}"
+VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/reelsentry/lib}"
+VMS_NOTIFYDIR="${VMS_NOTIFYDIR:-/usr/local/emhttp/plugins/reelsentry/notifications}"
 # shellcheck source=/dev/null
 for f in common validate json redact log config queue inventory classify; do . "${VMS_LIBDIR}/${f}.sh" || exit 1; done
 # shellcheck source=/dev/null
@@ -21,7 +21,7 @@ export EV_EVENT_ID=$eid EV_SERVER=$server EV_VM_UUID="00000000-0000-0000-0000-00
        EV_VM_NAME="Test VM" EV_EVENT_TYPE="test" EV_SEVERITY="info" \
        EV_CLASSIFICATION="expected" EV_TIMESTAMP="$ts" EV_PREVIOUS_STATE="n/a" \
        EV_CURRENT_STATE="n/a" EV_HEALTH_STATE="n/a" \
-       EV_SUMMARY="Test notification from VM Sentinel" \
+       EV_SUMMARY="Test notification from ReelSentry" \
        EV_DETAILS="If you can read this, notifications are working."
 
 run_one() {

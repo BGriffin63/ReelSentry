@@ -1,6 +1,6 @@
 <?php
-/* VM Sentinel — Event History tab (spec §13.4). SPDX-License-Identifier: MIT
-   Included by VMSentinel.page; shares its scope. History is secret-free. */
+/* ReelSentry — Event History tab (spec §13.4). SPDX-License-Identifier: MIT
+   Included by ReelSentry.page; shares its scope. History is secret-free. */
 $rows = [];
 foreach (array_filter(explode("\n", vms_run('services/history-tool.sh', ['tail','500']))) as $line) {
     $o = json_decode($line, true); if (is_array($o)) $rows[] = $o;
@@ -12,8 +12,8 @@ if (!function_exists('vms_sev_badge')) {
 ?>
 <p>
   <input id="vmsFlt" type="text" placeholder="Filter (VM, event, classification…)" oninput="vmsHistFilter()" style="width:280px">
-  <a href="/plugins/vm.sentinel/include/export.php?fmt=csv" class="button">Export CSV</a>
-  <a href="/plugins/vm.sentinel/include/export.php?fmt=json" class="button">Export JSON</a>
+  <a href="/plugins/reelsentry/include/export.php?fmt=csv" class="button">Export CSV</a>
+  <a href="/plugins/reelsentry/include/export.php?fmt=json" class="button">Export JSON</a>
   <button type="button" onclick="if(confirm('Clear all event history?'))VMS.post({action:'clear_history'}).then(()=>location.reload())">Clear history</button>
 </p>
 <table class="vms-tbl" id="vmsHistTbl">

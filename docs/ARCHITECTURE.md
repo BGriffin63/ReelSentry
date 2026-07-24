@@ -1,15 +1,15 @@
-# VM Sentinel — Architecture (Phases 2)
+# ReelSentry — Architecture (Phases 2)
 
-VM Sentinel is a **fail-open** VM lifecycle monitor for Unraid. A failure
-anywhere in VM Sentinel must never prevent a VM from changing state. This
+ReelSentry is a **fail-open** VM lifecycle monitor for Unraid. A failure
+anywhere in ReelSentry must never prevent a VM from changing state. This
 document is the authoritative design record; decisions here are justified in
 [`RESEARCH.md`](RESEARCH.md).
 
-- **Plugin id:** `vm.sentinel`
-- **Package/WebGUI root:** `/usr/local/emhttp/plugins/vm.sentinel/`
-- **Config root (persistent):** `/boot/config/plugins/vm.sentinel/`
-- **Runtime root (tmpfs):** `/var/run/vm.sentinel/`
-- **History root (appdata, fallback tmpfs):** `/mnt/user/appdata/vm.sentinel/history/`
+- **Plugin id:** `reelsentry`
+- **Package/WebGUI root:** `/usr/local/emhttp/plugins/reelsentry/`
+- **Config root (persistent):** `/boot/config/plugins/reelsentry/`
+- **Runtime root (tmpfs):** `/var/run/reelsentry/`
+- **History root (appdata, fallback tmpfs):** `/mnt/user/appdata/reelsentry/history/`
 
 ---
 
@@ -18,9 +18,9 @@ document is the authoritative design record; decisions here are justified in
 ```mermaid
 flowchart TD
     subgraph libvirt [libvirt / QEMU critical path]
-        H[qemu.d/50-vm-sentinel hook]
+        H[qemu.d/50-reelsentry hook]
     end
-    subgraph tmpfs [/var/run/vm.sentinel tmpfs]
+    subgraph tmpfs [/var/run/reelsentry tmpfs]
         SPOOL[(spool/ ndjson events)]
         LOCK[[locks + pid]]
         HSTATE[(health/ state)]
@@ -65,7 +65,7 @@ never blocks. Everything expensive happens in `PROC`/`HC`, off the critical path
 
 ## 2. Event model
 
-Raw libvirt argv → normalized VM Sentinel event. See [`EVENT-MODEL.md`](EVENT-MODEL.md)
+Raw libvirt argv → normalized ReelSentry event. See [`EVENT-MODEL.md`](EVENT-MODEL.md)
 for the full mapping table. Normalization lives in `src/lib/normalize.sh` and is
 the single source of truth (unit-tested outside Unraid).
 
@@ -100,7 +100,7 @@ settings.
 
 ---
 
-## 3. The hook (`src/hooks/vm-sentinel-hook`)
+## 3. The hook (`src/hooks/reelsentry-hook`)
 
 argv from libvirt: `<vm-name> <operation> <sub-operation> <extra…>`
 
@@ -125,7 +125,7 @@ case runtime is bounded by a single small tmpfs write.
 
 ## 4. Queue + processor (single-flight)
 
-- **Spool:** `/var/run/vm.sentinel/spool/*.ev`, tmpfs, append-only files, one
+- **Spool:** `/var/run/reelsentry/spool/*.ev`, tmpfs, append-only files, one
   event each. Bounded: if the spool exceeds `VMS_QUEUE_MAX` files, the hook drops
   the **oldest non-critical** record and increments a dropped counter surfaced in
   Diagnostics (spec §17).
@@ -203,7 +203,7 @@ Health state lives in tmpfs (`health/<uuid>.state`), so a reboot resets to
 
 ## 7. Service lifecycle
 
-A tiny supervisor script (`src/services/vm-sentinel-service`) is started by the
+A tiny supervisor script (`src/services/reelsentry-service`) is started by the
 `.plg` and by array-start. It:
 - ensures tmpfs dirs exist,
 - installs/repairs the hook idempotently,
@@ -258,12 +258,12 @@ Full model in [`SECURITY.md`](SECURITY.md). Summary:
 
 ## 11. Install / upgrade / uninstall
 
-See [`../vm.sentinel.plg`](../vm.sentinel.plg) and `src/hooks/install-hook.sh`.
+See [`../reelsentry.plg`](../reelsentry.plg) and `src/hooks/install-hook.sh`.
 - **Install:** verify `MinVer`, unpack `.txz` to the WebGUI root, create dirs,
   install hook idempotently, start service. Never restarts libvirt.
 - **Upgrade:** preserve config, run migrations, back up prior config, restart
-  only VM Sentinel components. Never touches running VMs or libvirt.
-- **Uninstall:** stop service, remove **only** `qemu.d/50-vm-sentinel` (and the
+  only ReelSentry components. Never touches running VMs or libvirt.
+- **Uninstall:** stop service, remove **only** `qemu.d/50-reelsentry` (and the
   optional shim if we installed it, restoring `qemu.orig.vmsentinel`), remove
   tmpfs runtime, leave config/history by default (documented), succeed even if
   files are already gone.

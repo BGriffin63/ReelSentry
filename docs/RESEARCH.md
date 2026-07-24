@@ -1,4 +1,4 @@
-# VM Sentinel — Research Notes (Phase 1)
+# ReelSentry — Research Notes (Phase 1)
 
 > **Status:** Living document. Every claim tagged **[VERIFY]** must be confirmed on a
 > real Unraid 7.2+ system before the plugin is declared "Community Applications
@@ -21,7 +21,7 @@ the same problem and flagged for hardware verification.
 | VM stack | libvirt + QEMU/KVM, managed by Unraid "VM Manager" | Official Unraid VM Manager docs. |
 | Package format | Slackware `.txz` referenced by a `.plg` XML manifest | Unraid plugin convention. |
 | WebGUI | emhttp / PHP pages under `/usr/local/emhttp/plugins/<id>/` with `.page` headers | Unraid plugin convention. |
-| Shell | `bash` present; `curl` present; **`jq` NOT guaranteed** | Slackware base + Unraid. VM Sentinel therefore does **not** depend on `jq`. |
+| Shell | `bash` present; `curl` present; **`jq` NOT guaranteed** | Slackware base + Unraid. ReelSentry therefore does **not** depend on `jq`. |
 | SQLite | `sqlite3` availability is **not guaranteed** across all installs | We use JSON Lines instead of SQLite to avoid a bundled dependency (spec §15). |
 
 **Why Unraid 7.2 minimum:** earlier releases shipped older libvirt builds whose
@@ -46,8 +46,8 @@ Unraid ships a notification agent driven by a CLI, conventionally:
   exact accepted tokens on 7.2.
 - Delivery fan-out (email, Discord/Telegram/Pushover agents, browser toast) is
   handled by Unraid itself based on the user's **Settings → Notifications**
-  configuration. VM Sentinel does **not** implement SMTP (spec §35).
-- The `notify` script is the primary provider. VM Sentinel shells out to it with
+  configuration. ReelSentry does **not** implement SMTP (spec §35).
+- The `notify` script is the primary provider. ReelSentry shells out to it with
   fully-quoted, validated arguments and never interpolates untrusted VM names
   into a shell string (see `src/notifications/native.sh`).
 
@@ -63,7 +63,7 @@ handling instead of re-implementing it.
 Unraid historically ships a single shared hook file at
 `/etc/libvirt/hooks/qemu`. Multiple plugins wanting VM lifecycle events have, in
 the past, **overwritten** this file — clobbering each other. Community
-Applications moderators explicitly scrutinize this. VM Sentinel must **never**
+Applications moderators explicitly scrutinize this. ReelSentry must **never**
 own or replace the shared file.
 
 ### libvirt hook-directory dispatch
@@ -79,10 +79,10 @@ Modern libvirt (5.x+) supports a **hook directory**: alongside
 Operations relevant to lifecycle: `prepare`, `start`, `started`, `stopped`,
 `release`, plus `restore`/`migrate` variants. Sub-operations: `begin` / `end`.
 
-**Chosen design:** VM Sentinel installs exactly one namespaced, executable file:
+**Chosen design:** ReelSentry installs exactly one namespaced, executable file:
 
 ```
-/etc/libvirt/hooks/qemu.d/50-vm-sentinel
+/etc/libvirt/hooks/qemu.d/50-reelsentry
 ```
 
 - It coexists with any other `qemu.d/*` consumer and with the shared `qemu`
@@ -140,14 +140,14 @@ formats. Any convention that could not be confirmed from official docs is tagged
 
 ## 5. Storage & flash-wear
 
-- **Config** (small, must survive reboot): `/boot/config/plugins/vm.sentinel/`.
+- **Config** (small, must survive reboot): `/boot/config/plugins/reelsentry/`.
   Written atomically (temp file + `mv`), previous version kept as `.bak`. This is
   Unraid convention and the writes are rare (only on Save).
 - **Event history** (high churn): JSON Lines in **appdata** by default
-  (`/mnt/user/appdata/vm.sentinel/history/`) with detection + fallback to
-  `/var/log/vm.sentinel/` (tmpfs) if appdata is absent (cache pool not
+  (`/mnt/user/appdata/reelsentry/history/`) with detection + fallback to
+  `/var/log/reelsentry/` (tmpfs) if appdata is absent (cache pool not
   guaranteed, spec §15). **Never** on `/boot`.
-- **Runtime** (spool, locks, PID, health state): tmpfs at `/var/run/vm.sentinel/`.
+- **Runtime** (spool, locks, PID, health state): tmpfs at `/var/run/reelsentry/`.
   Lost on reboot by design; nothing persistent lives there.
 
 **Reasoning:** this cleanly separates "small + persistent + flash" from

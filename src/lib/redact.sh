@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — secret redaction for logs, diagnostics, and exports (spec §26).
+# ReelSentry — secret redaction for logs, diagnostics, and exports (spec §26).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`.
 #

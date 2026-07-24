@@ -1,5 +1,5 @@
 <?php
-/* VM Sentinel — stream a sanitized diagnostics bundle (spec §13.5, §18).
+/* ReelSentry — stream a sanitized diagnostics bundle (spec §13.5, §18).
    SPDX-License-Identifier: MIT
    The bundle is produced by diagnostics.sh which redacts all secrets. */
 require_once __DIR__.'/vms-common.php';

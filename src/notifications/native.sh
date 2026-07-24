@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — native Unraid notification provider (spec §10).
+# ReelSentry — native Unraid notification provider (spec §10).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`. Depends on provider.sh, classify.sh.
 #
@@ -31,11 +31,11 @@ provider_native_send() {
     description="${EV_DETAILS:-}"
     [ -z "$description" ] && description="$EV_SUMMARY"
     # Link back to the plugin page if the WebGUI base is known.
-    link="/Settings/vm.sentinel"
+    link="/Settings/reelsentry"
 
     # Bounded execution; the notify CLI is local and fast, but guard anyway.
     if timeout 10 "$VMS_NOTIFY_BIN" \
-        -e "VM Sentinel" \
+        -e "ReelSentry" \
         -s "$subject" \
         -d "$description" \
         -i "$importance" \

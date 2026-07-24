@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — severity mapping + intent classification (spec §7).
+# ReelSentry — severity mapping + intent classification (spec §7).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`.
 #

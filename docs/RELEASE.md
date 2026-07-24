@@ -1,4 +1,4 @@
-# VM Sentinel — Release Process (spec §29)
+# ReelSentry — Release Process (spec §29)
 
 Semantic versioning. Progression: `0.1.0-alpha` → `0.2.0-beta` → `0.9.0-rc1` →
 `1.0.0`.
@@ -24,15 +24,15 @@ scripts/release.sh
 This runs `generate-icons.py`, `build.sh`, `package.sh`, then stamps a copy of the
 `.plg` in `build/` with the version and the real package **SHA256**. Artifacts:
 
-- `build/vm.sentinel-<pkgver>-x86_64-1.txz`
-- `build/vm.sentinel-<pkgver>-x86_64-1.txz.sha256`
-- `build/vm.sentinel.plg` (stamped)
+- `build/reelsentry-<pkgver>-x86_64-1.txz`
+- `build/reelsentry-<pkgver>-x86_64-1.txz.sha256`
+- `build/reelsentry.plg` (stamped)
 
 ## Publish (manual, human-confirmed)
 
 1. Tag: `git tag v<version> && git push --tags`.
 2. Create a GitHub **Release** `v<version>`; upload the `.txz` **and** `.sha256`.
-3. Commit the stamped `vm.sentinel.plg` to `main` (its `packageURL` points at the
+3. Commit the stamped `reelsentry.plg` to `main` (its `packageURL` points at the
    immutable release asset; the `<SHA256>` matches).
 4. Verify: install the `.plg` on a test Unraid box; confirm checksum validation
    passes and the plugin installs.

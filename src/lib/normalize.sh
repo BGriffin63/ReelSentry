@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — libvirt raw action -> normalized VM Sentinel event (spec §5).
+# ReelSentry — libvirt raw action -> normalized ReelSentry event (spec §5).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`.
 #

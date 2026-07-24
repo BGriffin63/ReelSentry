@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""VM Sentinel — programmatic icon generator (spec §4, §23).
+"""ReelSentry — programmatic icon generator (spec §4, §23).
 SPDX-License-Identifier: MIT
 
-Renders the VM Sentinel mark (shield + VM window + pulse + status dot) to PNGs
+Renders the ReelSentry mark (shield + VM window + pulse + status dot) to PNGs
 using ONLY the Python standard library (zlib, struct). No external assets, no
 fonts, no tracking data. Deterministic output committed as assets/*.png.
 
@@ -10,7 +10,7 @@ Usage: python3 scripts/generate-icons.py [outdir]
 """
 import os, sys, zlib, struct, math
 
-# ---- Palette (matches assets/vm-sentinel.svg) --------------------------------
+# ---- Palette (matches assets/reelsentry.svg) --------------------------------
 SHIELD   = (0x1f, 0x6f, 0xeb, 255)
 BORDER   = (0x0b, 0x2a, 0x5b, 255)
 WINDOW   = (0x0b, 0x2a, 0x5b, 255)
@@ -154,19 +154,19 @@ def main():
     outdir = os.path.abspath(outdir)
     os.makedirs(outdir, exist_ok=True)
     targets = {
-        "vm-sentinel-512.png": 512,
-        "vm-sentinel-256.png": 256,
-        "vm-sentinel-128.png": 128,
-        "vm-sentinel-48.png": 48,
-        "vm-sentinel-32.png": 32,
+        "reelsentry-512.png": 512,
+        "reelsentry-256.png": 256,
+        "reelsentry-128.png": 128,
+        "reelsentry-48.png": 48,
+        "reelsentry-32.png": 32,
     }
     for name, size in targets.items():
         print(f"rendering {name} ({size}px)…")
         write_png(os.path.join(outdir, name), size, render(size))
     # WebGUI icon + favicon copies
     import shutil
-    shutil.copyfile(os.path.join(outdir, "vm-sentinel-48.png"),
-                    os.path.join(outdir, "vm-sentinel.png"))
+    shutil.copyfile(os.path.join(outdir, "reelsentry-48.png"),
+                    os.path.join(outdir, "reelsentry.png"))
     print("done")
 
 

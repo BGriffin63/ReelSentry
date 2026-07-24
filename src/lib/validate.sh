@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — input validation. All external input is untrusted (spec §18).
+# ReelSentry — input validation. All external input is untrusted (spec §18).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`. Every function returns 0 (valid) / 1.
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# VM Sentinel — diagnostics + sanitized support bundle (spec §13.5, §18).
+# ReelSentry — diagnostics + sanitized support bundle (spec §13.5, §18).
 # SPDX-License-Identifier: MIT
 # Usage:
 #   diagnostics.sh status     # prints a JSON status object for the GUI
 #   diagnostics.sh bundle     # writes a redacted .tar.gz, prints its path
 set -u
-VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
-VMS_PLUGIN_ROOT="${VMS_PLUGIN_ROOT:-/usr/local/emhttp/plugins/vm.sentinel}"
+VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/reelsentry/lib}"
+VMS_PLUGIN_ROOT="${VMS_PLUGIN_ROOT:-/usr/local/emhttp/plugins/reelsentry}"
 # shellcheck source=/dev/null
 for f in common validate json redact log config queue history inventory; do . "${VMS_LIBDIR}/${f}.sh" || exit 1; done
 # shellcheck source=/dev/null
@@ -53,14 +53,14 @@ bundle() {
     [ -f "$VMS_CONFIG_SNAPSHOT" ] && redact_stream < "$VMS_CONFIG_SNAPSHOT" > "$dir/config.snapshot"
     # NEVER include secrets.json.
     # Logs (already redacted at write time, redacted again defensively).
-    [ -f "$VMS_LOG_FILE" ] && redact_stream < "$VMS_LOG_FILE" > "$dir/vm-sentinel.log"
+    [ -f "$VMS_LOG_FILE" ] && redact_stream < "$VMS_LOG_FILE" > "$dir/reelsentry.log"
     # Recent history (already secret-free).
     local hf; hf=$(history_path 2>/dev/null) && [ -f "$hf" ] && tail -n 500 "$hf" | redact_stream > "$dir/history.tail.jsonl"
     # Environment facts.
     { echo "plugin_version=$(version)"; echo "unraid_version=$(unraid_version)";
       echo "date=$(vms_now_iso)"; hook_status; _svc processor; _svc healthcheck; } > "$dir/env.txt"
 
-    local out; out="/tmp/vm-sentinel-diagnostics-$(date +%Y%m%d-%H%M%S).tar.gz"
+    local out; out="/tmp/reelsentry-diagnostics-$(date +%Y%m%d-%H%M%S).tar.gz"
     tar -C "$dir" -czf "$out" . 2>/dev/null
     rm -rf "$dir"
     echo "$out"

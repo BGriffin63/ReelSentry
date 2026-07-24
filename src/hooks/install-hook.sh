@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# VM Sentinel — idempotent, surgical hook install/uninstall (spec §6, §20).
+# ReelSentry — idempotent, surgical hook install/uninstall (spec §6, §20).
 # SPDX-License-Identifier: MIT
 #
 # We install exactly ONE namespaced file and never touch the shared qemu file:
-#     /etc/libvirt/hooks/qemu.d/50-vm-sentinel
+#     /etc/libvirt/hooks/qemu.d/50-reelsentry
 #
 # The optional cooperative shim (see RESEARCH.md §3.1) is DISABLED by default and
 # only relevant if hardware testing proves qemu.d/ is not honored.
@@ -12,15 +12,15 @@ set -u
 
 VMS_HOOK_ROOT="${VMS_HOOK_ROOT:-/etc/libvirt/hooks}"
 VMS_HOOK_D="${VMS_HOOK_ROOT}/qemu.d"
-VMS_HOOK_NAME="50-vm-sentinel"
+VMS_HOOK_NAME="50-reelsentry"
 VMS_HOOK_TARGET="${VMS_HOOK_D}/${VMS_HOOK_NAME}"
-VMS_HOOK_SOURCE="${VMS_HOOK_SOURCE:-/usr/local/emhttp/plugins/vm.sentinel/hooks/vm-sentinel-hook}"
+VMS_HOOK_SOURCE="${VMS_HOOK_SOURCE:-/usr/local/emhttp/plugins/reelsentry/hooks/reelsentry-hook}"
 
 # The hook SOURCE carries this marker on line 2 (line 1 is the shebang). We copy
 # the source verbatim so the shebang is never displaced — a comment on line 1
 # would make the kernel refuse to exec the file ("Exec format error") and, during
 # the libvirt 'prepare' phase, that would block the VM from starting.
-VMS_HOOK_MARKER="# VM-SENTINEL-OWNED-HOOK v1"
+VMS_HOOK_MARKER="# REELSENTRY-OWNED-HOOK v1"
 
 hook_is_ours() {
     [ -f "$1" ] || return 1
@@ -61,7 +61,7 @@ uninstall_hook() {
     if hook_is_ours "$VMS_HOOK_TARGET"; then
         rm -f "$VMS_HOOK_TARGET" 2>/dev/null && echo "Removed hook: $VMS_HOOK_TARGET"
     else
-        echo "REFUSING to remove $VMS_HOOK_TARGET: not VM Sentinel-owned" >&2
+        echo "REFUSING to remove $VMS_HOOK_TARGET: not ReelSentry-owned" >&2
         return 1
     fi
     # Remove now-empty qemu.d only if WE created it and it is empty; otherwise leave.

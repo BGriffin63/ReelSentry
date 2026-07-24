@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — event history storage as rotated JSON Lines (spec §15).
+# ReelSentry — event history storage as rotated JSON Lines (spec §15).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`. Depends on common.sh, json.sh, redact.sh.
 #

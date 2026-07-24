@@ -35,7 +35,7 @@ jobs:
           bash scripts/release.sh
           # SAFETY GATE: the SHA256 in the stamped .plg MUST match the built .txz,
           # or an install would fail checksum verification. Fail the release if not.
-          plg_sha=$(grep -oE 'sha256[[:space:]]+"[a-f0-9]{64}"' build/vm.sentinel.plg | grep -oE '[a-f0-9]{64}')
+          plg_sha=$(grep -oE 'sha256[[:space:]]+"[a-f0-9]{64}"' build/reelsentry.plg | grep -oE '[a-f0-9]{64}')
           txz_sha=$(cat build/*.txz.sha256)
           if [ "$plg_sha" != "$txz_sha" ]; then
             echo "FATAL: stamped .plg sha ($plg_sha) != txz sha ($txz_sha)"; exit 1
@@ -43,12 +43,12 @@ jobs:
           echo "checksum match verified: $plg_sha"
           # Promote the stamped manifest to the repo root so installs from main
           # carry the correct version and SHA256.
-          cp build/vm.sentinel.plg vm.sentinel.plg
+          cp build/reelsentry.plg reelsentry.plg
 
       - name: Generate SBOM (best effort)
         run: |
           {
-            echo "# VM Sentinel SBOM"
+            echo "# ReelSentry SBOM"
             echo "version: $(cat VERSION)"
             echo "runtime-deps: bash, coreutils, curl, libvirt/virsh, php, unraid notify (provided by Unraid)"
             echo "bundled-third-party: none"
@@ -58,12 +58,12 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet -- vm.sentinel.plg; then
-            git add vm.sentinel.plg
-            git commit -m "release: stamp vm.sentinel.plg for ${GITHUB_REF_NAME} [skip ci]"
+          if ! git diff --quiet -- reelsentry.plg; then
+            git add reelsentry.plg
+            git commit -m "release: stamp reelsentry.plg for ${GITHUB_REF_NAME} [skip ci]"
             git push origin HEAD:main
           else
-            echo "vm.sentinel.plg already up to date."
+            echo "reelsentry.plg already up to date."
           fi
 
       - name: Create GitHub Release with verified assets

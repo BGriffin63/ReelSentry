@@ -1,6 +1,6 @@
-# VM Sentinel — Security & Threat Model (spec §18)
+# ReelSentry — Security & Threat Model (spec §18)
 
-VM Sentinel runs as host-level software on Unraid. This document is the security
+ReelSentry runs as host-level software on Unraid. This document is the security
 review required before release. It states the trust boundaries, the threats
 considered, and the concrete mitigation in code.
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# VM Sentinel — history utilities for the WebGUI (spec §13.4).
+# ReelSentry — history utilities for the WebGUI (spec §13.4).
 # SPDX-License-Identifier: MIT
 # Usage:
 #   history-tool.sh clear
 #   history-tool.sh tail <n>         # last n JSONL lines (already secret-free)
 #   history-tool.sh export-csv       # sanitized CSV to stdout
 set -u
-VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
+VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/reelsentry/lib}"
 # shellcheck source=/dev/null
 for f in common validate json redact log config history; do . "${VMS_LIBDIR}/${f}.sh" || exit 1; done
 

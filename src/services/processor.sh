@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — event processor (spec §6, §7, §17). Runs OFF the critical path.
+# ReelSentry — event processor (spec §6, §7, §17). Runs OFF the critical path.
 # SPDX-License-Identifier: MIT
 #
 # Drains the tmpfs spool under a single-flight lock, classifies each event,
@@ -7,8 +7,8 @@
 # dispatches notifications. Provider failures never abort draining (fail-open).
 
 set -u
-VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
-VMS_NOTIFYDIR="${VMS_NOTIFYDIR:-/usr/local/emhttp/plugins/vm.sentinel/notifications}"
+VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/reelsentry/lib}"
+VMS_NOTIFYDIR="${VMS_NOTIFYDIR:-/usr/local/emhttp/plugins/reelsentry/notifications}"
 
 # shellcheck source=/dev/null
 for f in common validate json redact log config queue history inventory normalize classify; do

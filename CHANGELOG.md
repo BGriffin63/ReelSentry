@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to VM Sentinel are documented here. The format is based on
+All notable changes to ReelSentry are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
@@ -8,12 +8,24 @@ All notable changes to VM Sentinel are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.2.0] — 2026-07-24
+### Changed
+- **Rebranded VM Sentinel → ReelSentry** for a consistent product family
+  (ReelPing, ReelSpace, ReelSentry). New plugin id `reelsentry` (paths
+  `/boot/config/plugins/reelsentry/`, `/usr/local/emhttp/plugins/reelsentry/`,
+  hook `qemu.d/50-reelsentry`, runtime `/var/run/reelsentry/`), new repo
+  `BGriffin63/ReelSentry`, new install URL, renamed assets and WebGUI page.
+- Because the plugin id changed, this installs as a **new** plugin — remove the
+  old `vm.sentinel` plugin after installing ReelSentry (settings do not carry
+  over). Functionally identical to 0.1.8; internal `vms_`/`VMS_` code identifiers
+  are unchanged (private implementation detail).
+
 ## [0.1.8] — 2026-07-24
 ### Fixed
 - **Plugin logo/icon didn't show on the Installed Plugins page.** Unraid
   auto-detects `/usr/local/emhttp/plugins/<name>/<name>.png`, but the icon was
-  named `vm-sentinel.png` (hyphen) while the plugin id is `vm.sentinel` (dot).
-  Added `vm.sentinel.png`; also changed the `.plg` Font Awesome fallback from the
+  named `reelsentry.png` (hyphen) while the plugin id is `reelsentry` (dot).
+  Added `reelsentry.png`; also changed the `.plg` Font Awesome fallback from the
   FA6 name `shield-halved` (unsupported by Unraid's FA set, rendered blank) to
   `shield-alt`.
 ### Changed
@@ -115,7 +127,7 @@ All notable changes to VM Sentinel are documented here. The format is based on
 ### Added
 - Initial public **alpha** (release version `0.1.0`; alpha status noted here and
   via the Community Applications Beta flag).
-- VM lifecycle monitoring via a namespaced libvirt `qemu.d/50-vm-sentinel` hook
+- VM lifecycle monitoring via a namespaced libvirt `qemu.d/50-reelsentry` hook
   that coexists with other plugins and never blocks VM operations (fail-open).
 - Spool + single-flight processor architecture (runtime in tmpfs).
 - Honest intent classification: `expected` / `unexpected` / `indeterminate`.
@@ -136,13 +148,14 @@ All notable changes to VM Sentinel are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.8...HEAD
-[0.1.8]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.8
-[0.1.7]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.7
-[0.1.6]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.6
-[0.1.5]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.5
-[0.1.4]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.4
-[0.1.3]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.3
-[0.1.2]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.2
-[0.1.1]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.1
-[0.1.0]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.0
+[Unreleased]: https://github.com/BGriffin63/ReelSentry/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.0
+[0.1.8]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.8
+[0.1.7]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.7
+[0.1.6]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.6
+[0.1.5]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.5
+[0.1.4]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.4
+[0.1.3]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.3
+[0.1.2]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.2
+[0.1.1]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.1
+[0.1.0]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.0

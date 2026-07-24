@@ -1,7 +1,7 @@
 #!/bin/bash
-# VM-SENTINEL-OWNED-HOOK v1
-# VM Sentinel — libvirt qemu.d hook (spec §6). INSTALLED VERBATIM AS:
-#     /etc/libvirt/hooks/qemu.d/50-vm-sentinel
+# REELSENTRY-OWNED-HOOK v1
+# ReelSentry — libvirt qemu.d hook (spec §6). INSTALLED VERBATIM AS:
+#     /etc/libvirt/hooks/qemu.d/50-reelsentry
 # SPDX-License-Identifier: MIT
 #
 # The shebang MUST stay on line 1 and the marker on line 2 (install-hook.sh
@@ -34,7 +34,7 @@ case "$op" in
 esac
 
 # Resolve our lib dir relative to the real plugin install (overridable for tests).
-VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
+VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/reelsentry/lib}"
 
 # Source libraries defensively; if anything is missing, exit 0 (no monitoring).
 # shellcheck source=/dev/null

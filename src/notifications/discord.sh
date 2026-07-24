@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — Discord incoming-webhook provider (spec §11). NO BOT.
+# ReelSentry — Discord incoming-webhook provider (spec §11). NO BOT.
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`. Depends on provider.sh, json.sh,
 # validate.sh, redact.sh, common.sh.
@@ -54,7 +54,7 @@ discord_build_payload() {
     color=$(_discord_color "${EV_SEVERITY:-info}")
     emoji=$(_discord_emoji "${EV_SEVERITY:-info}")
     title="${emoji} VM Alert: ${EV_SUMMARY:-VM event}"
-    username=$(config_get discord_username "VM Sentinel")
+    username=$(config_get discord_username "ReelSentry")
     avatar=$(config_get discord_avatar "")
 
     # Optional mention text (role/user), sanitized to digits + Discord mention chars.
@@ -82,7 +82,7 @@ discord_build_payload() {
         "$(json_escape_string "${EV_DETAILS:-$EV_SUMMARY}")" \
         "$color" \
         "$fields" \
-        "$(json_escape_string "VM Sentinel • Monitor every VM")" \
+        "$(json_escape_string "ReelSentry • Monitor every VM")" \
         "$(json_escape_string "${EV_TIMESTAMP}")")
 
     # content carries the mention (embeds don't ping); allowed_parsed keeps it tight.

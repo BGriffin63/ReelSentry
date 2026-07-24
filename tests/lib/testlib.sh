@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — minimal test harness (spec §27). SPDX-License-Identifier: MIT
+# ReelSentry — minimal test harness (spec §27). SPDX-License-Identifier: MIT
 # Provides assertions + an isolated temp environment so tests run entirely
 # outside Unraid. Source this at the top of every test file.
 set -u
@@ -27,7 +27,7 @@ vms_test_env() {
     export VMS_HISTORY_DIR="$VMS_ROOT_TMP/history"
     export VMS_HISTORY_FALLBACK_DIR="$VMS_ROOT_TMP/history_fb"
     export VMS_LOG_DIR="$VMS_ROOT_TMP/log"
-    export VMS_LOG_FILE="$VMS_LOG_DIR/vm-sentinel.log"
+    export VMS_LOG_FILE="$VMS_LOG_DIR/reelsentry.log"
     mkdir -p "$VMS_CONFIG_DIR"
 }
 

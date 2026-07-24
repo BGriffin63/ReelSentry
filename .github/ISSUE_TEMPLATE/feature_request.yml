@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an idea for VM Sentinel
+description: Suggest an idea for ReelSentry
 labels: [enhancement]
 body:
   - type: textarea
@@ -20,7 +20,7 @@ body:
     id: constraints
     attributes:
       label: Fits the project constraints
-      description: VM Sentinel stays safe and simple.
+      description: ReelSentry stays safe and simple.
       options:
         - label: Does not require a Discord bot, a daemon, inbound ports, or bundled binaries.
         - label: Does not put network calls on the VM lifecycle critical path.

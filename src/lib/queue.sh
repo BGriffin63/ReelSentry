@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — spool queue, dedup, cooldown, quiet-hours, suppression.
+# ReelSentry — spool queue, dedup, cooldown, quiet-hours, suppression.
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`. Depends on common.sh, config.sh.
 #

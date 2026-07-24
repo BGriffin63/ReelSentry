@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — notification provider interface (spec §12).
+# ReelSentry — notification provider interface (spec §12).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`.
 #

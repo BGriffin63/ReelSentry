@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — provider dispatcher (spec §12).
+# ReelSentry — provider dispatcher (spec §12).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`. Depends on provider.sh, native.sh,
 # discord.sh, json.sh, config.sh.

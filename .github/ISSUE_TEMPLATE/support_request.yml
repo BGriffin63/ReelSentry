@@ -1,5 +1,5 @@
 name: Support request
-description: Get help configuring or using VM Sentinel
+description: Get help configuring or using ReelSentry
 labels: [support]
 body:
   - type: markdown
@@ -16,7 +16,7 @@ body:
   - type: input
     id: versions
     attributes:
-      label: VM Sentinel + Unraid versions
+      label: ReelSentry + Unraid versions
   - type: checkboxes
     id: confirms
     attributes:

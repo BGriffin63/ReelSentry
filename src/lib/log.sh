@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — bounded structured logging (spec §26).
+# ReelSentry — bounded structured logging (spec §26).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`. Depends on common.sh, redact.sh.
 #

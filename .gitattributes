@@ -1,4 +1,4 @@
-# VM Sentinel runs on Linux/Unraid. Force LF on all text so shell scripts, the
+# ReelSentry runs on Linux/Unraid. Force LF on all text so shell scripts, the
 # libvirt hook, PHP .page files, and the .plg never get CRLF (which would break
 # `#!/usr/bin/env bash` with `bad interpreter: ...^M`).
 * text=auto eol=lf
@@ -14,8 +14,8 @@
 *.css       text eol=lf
 *.py        text eol=lf
 *.svg       text eol=lf
-vm-sentinel-hook      text eol=lf
-vm-sentinel-service   text eol=lf
+reelsentry-hook      text eol=lf
+reelsentry-service   text eol=lf
 
 # Binary assets — never touch line endings.
 *.png binary

@@ -1,4 +1,4 @@
-/* VM Sentinel WebGUI styling — intentionally light; inherits Unraid theme.
+/* ReelSentry WebGUI styling — intentionally light; inherits Unraid theme.
    SPDX-License-Identifier: MIT */
 .vms-wrap { max-width: 1100px; }
 .vms-cards { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 18px; }

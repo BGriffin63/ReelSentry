@@ -1,21 +1,21 @@
 <?xml version='1.0' standalone='yes'?>
 <!--
-  VM Sentinel — Unraid plugin manifest (spec §20, §22).
+  ReelSentry — Unraid plugin manifest (spec §20, §22).
   SPDX-License-Identifier: MIT
   Placeholders (BGriffin63, &version;, &sha256;) are filled by
   scripts/release.sh at release time. See docs/MAINTAINER-CHECKLIST.md.
 -->
 <!DOCTYPE PLUGIN [
-  <!ENTITY name      "vm.sentinel">
+  <!ENTITY name      "reelsentry">
   <!ENTITY author    "BGriffin63">
-  <!ENTITY version   "0.1.8">
-  <!ENTITY launch    "Settings/VMSentinel">
-  <!ENTITY pluginURL "https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/vm.sentinel.plg">
-  <!ENTITY gitURL    "https://github.com/BGriffin63/unraid-vm-sentinel">
-  <!ENTITY pkgName   "vm.sentinel-&version;-x86_64-1.txz">
+  <!ENTITY version   "0.1.7">
+  <!ENTITY launch    "Settings/ReelSentry">
+  <!ENTITY pluginURL "https://raw.githubusercontent.com/BGriffin63/ReelSentry/main/reelsentry.plg">
+  <!ENTITY gitURL    "https://github.com/BGriffin63/ReelSentry">
+  <!ENTITY pkgName   "reelsentry-&version;-x86_64-1.txz">
   <!ENTITY packageURL "&gitURL;/releases/download/v&version;/&pkgName;">
   <!ENTITY pkgDir    "/boot/config/plugins/&name;">
-  <!ENTITY sha256    "c1fae9868e3e5d7577b317c8bed61b1c2c9c5699fe56c92520c18af60db488fd">
+  <!ENTITY sha256    "522630cc9758b590d8dcfe3502a9641f14b7889cf9e3e0c1b8806b6408157d15">
 ]>
 
 <PLUGIN name="&name;"
@@ -25,11 +25,11 @@
         pluginURL="&pluginURL;"
         min="7.2.0"
         icon="shield-alt"
-        support="https://github.com/BGriffin63/unraid-vm-sentinel/issues">
+        support="https://github.com/BGriffin63/ReelSentry/issues">
 
   <CHANGES>
 ### 0.1.0 (alpha)
-- Initial public alpha of VM Sentinel.
+- Initial public alpha of ReelSentry.
 - VM lifecycle monitoring via a namespaced libvirt qemu.d hook (coexists with other plugins).
 - Native Unraid notifications + optional Discord webhook (no bot).
 - Optional agentless health checks (ICMP / TCP / QEMU guest agent).
@@ -45,7 +45,7 @@
       lowest=$(printf '%s\n%s\n' "$unraid_ver" "$req" | sort -V | head -n1)
       if [ "$unraid_ver" != "" ] &amp;&amp; [ "$lowest" != "$req" ] &amp;&amp; [ "$unraid_ver" != "$req" ]; then
         echo "**********************************************************"
-        echo " VM Sentinel requires Unraid 7.2.0 or newer (found $unraid_ver)."
+        echo " ReelSentry requires Unraid 7.2.0 or newer (found $unraid_ver)."
         echo " Installation aborted."
         echo "**********************************************************"
         exit 1
@@ -68,12 +68,12 @@
 
       PLUGIN_ROOT="/usr/local/emhttp/plugins/&name;"
       # Migrate config if needed, install the libvirt hook idempotently, start services.
-      [ -x "$PLUGIN_ROOT/services/vm-sentinel-service" ] &amp;&amp; \
-        bash "$PLUGIN_ROOT/services/vm-sentinel-service" start || true
+      [ -x "$PLUGIN_ROOT/services/reelsentry-service" ] &amp;&amp; \
+        bash "$PLUGIN_ROOT/services/reelsentry-service" start || true
 
       echo ""
-      echo "VM Sentinel &version; installed."
-      echo "Open Settings → VM Sentinel to choose which VMs to monitor."
+      echo "ReelSentry &version; installed."
+      echo "Open Settings → ReelSentry to choose which VMs to monitor."
       echo "NOTE: this is an ALPHA build; validate on a test system first."
     </INLINE>
   </FILE>
@@ -81,7 +81,7 @@
   <!-- Auto-start on array start (self-healing hook repair). -->
   <FILE Name="/usr/local/emhttp/plugins/&name;/event/started" Mode="0755">
     <INLINE>#!/bin/bash
-      bash /usr/local/emhttp/plugins/&name;/services/vm-sentinel-service start &amp;>/dev/null &amp;
+      bash /usr/local/emhttp/plugins/&name;/services/reelsentry-service start &amp;>/dev/null &amp;
     </INLINE>
   </FILE>
 
@@ -90,7 +90,7 @@
     <INLINE>
       PLUGIN_ROOT="/usr/local/emhttp/plugins/&name;"
       # Stop services and remove ONLY our libvirt hook.
-      [ -x "$PLUGIN_ROOT/services/vm-sentinel-service" ] &amp;&amp; bash "$PLUGIN_ROOT/services/vm-sentinel-service" stop || true
+      [ -x "$PLUGIN_ROOT/services/reelsentry-service" ] &amp;&amp; bash "$PLUGIN_ROOT/services/reelsentry-service" stop || true
       [ -x "$PLUGIN_ROOT/hooks/install-hook.sh" ] &amp;&amp; bash "$PLUGIN_ROOT/hooks/install-hook.sh" uninstall || true
       # Remove runtime (tmpfs) state.
       rm -rf /var/run/&name; 2>/dev/null || true
@@ -99,7 +99,7 @@
       rm -rf "$PLUGIN_ROOT" 2>/dev/null || true
       # Leave /boot/config/plugins/&name; (user config + history) by default; see
       # docs — a full purge is a documented manual step.
-      echo "VM Sentinel removed. Your configuration was preserved at &pkgDir;."
+      echo "ReelSentry removed. Your configuration was preserved at &pkgDir;."
       echo "To fully remove it: rm -rf &pkgDir;"
     </INLINE>
   </FILE>

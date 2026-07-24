@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — safe JSON construction without jq.
+# ReelSentry — safe JSON construction without jq.
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`.
 #

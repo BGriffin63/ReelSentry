@@ -26,7 +26,7 @@ export VMS_NOTIFY_BIN="$VMS_ROOT_TMP/notify"
 
 # 1) Hook writes a spool record quickly and exits 0.
 t0=$(date +%s%N)
-bash "$REPO_ROOT/src/hooks/vm-sentinel-hook" "Game PC" crashed - -
+bash "$REPO_ROOT/src/hooks/reelsentry-hook" "Game PC" crashed - -
 rc=$?
 t1=$(date +%s%N)
 assert_eq "hook exit 0" "$rc" "0"
@@ -35,11 +35,11 @@ assert_true "hook returns fast (<1500ms)" "[ $ms -lt 1500 ]"
 assert_eq "one spool file" "$(find "$VMS_SPOOL_DIR" -maxdepth 1 -name '*.ev' | wc -l | tr -d ' ')" "1"
 
 # 2) 'prepare'/'reconnect' phases are ignored (no spool churn).
-bash "$REPO_ROOT/src/hooks/vm-sentinel-hook" "Game PC" prepare begin - >/dev/null 2>&1
+bash "$REPO_ROOT/src/hooks/reelsentry-hook" "Game PC" prepare begin - >/dev/null 2>&1
 assert_eq "prepare ignored" "$(find "$VMS_SPOOL_DIR" -maxdepth 1 -name '*.ev' | wc -l | tr -d ' ')" "1"
 
 # 3) Missing args must not crash the hook.
-bash "$REPO_ROOT/src/hooks/vm-sentinel-hook" >/dev/null 2>&1
+bash "$REPO_ROOT/src/hooks/reelsentry-hook" >/dev/null 2>&1
 assert_eq "hook no-args exit 0" "$?" "0"
 
 # 4) Corrupt spool record is quarantined, not fatal.
@@ -63,14 +63,14 @@ cat > "$VMS_NOTIFY_BIN" <<'EOF'
 exit 7
 EOF
 chmod +x "$VMS_NOTIFY_BIN"
-bash "$REPO_ROOT/src/hooks/vm-sentinel-hook" "Game PC" stopped end - >/dev/null 2>&1
+bash "$REPO_ROOT/src/hooks/reelsentry-hook" "Game PC" stopped end - >/dev/null 2>&1
 bash "$REPO_ROOT/src/services/processor.sh" drain
 assert_true "history recorded despite notify failure" "grep -q '\"event_type\":\"stopped\"' '$hf'"
 
 # 7) Single-flight: simulate a live lock holder and confirm a second drain no-ops.
 mkdir -p "$VMS_LOCK_DIR/processor.lockd"
 sleep 30 & holder=$!; echo "$holder" > "$VMS_LOCK_DIR/processor.lockd/pid"
-bash "$REPO_ROOT/src/hooks/vm-sentinel-hook" "Game PC" started begin - >/dev/null 2>&1
+bash "$REPO_ROOT/src/hooks/reelsentry-hook" "Game PC" started begin - >/dev/null 2>&1
 before=$(find "$VMS_SPOOL_DIR" -maxdepth 1 -name '*.ev' | wc -l | tr -d ' ')
 bash "$REPO_ROOT/src/services/processor.sh" drain   # must not acquire the held lock
 after=$(find "$VMS_SPOOL_DIR" -maxdepth 1 -name '*.ev' | wc -l | tr -d ' ')

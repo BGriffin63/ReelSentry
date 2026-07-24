@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — configuration access + atomic writes (spec §8, §15).
+# ReelSentry — configuration access + atomic writes (spec §8, §15).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`. Depends on common.sh, json.sh, validate.sh.
 #

@@ -1,14 +1,14 @@
-# VM Sentinel — Community Applications Submission (spec §22)
+# ReelSentry — Community Applications Submission (spec §22)
 
 > Field names and the submission flow evolve. **[VERIFY]** each step against the
 > current Community Applications (CA) documentation and the CA appfeed schema
-> before submitting. `templates/vm-sentinel.xml` and `templates/ca_profile.xml`
+> before submitting. `templates/reelsentry.xml` and `templates/ca_profile.xml`
 > use the current public reference and must pass CA validation/scanning.
 
 ## 1. Repository prerequisites
-- Public GitHub repo `unraid-vm-sentinel`, OSI license (MIT ✔), README ✔,
+- Public GitHub repo `ReelSentry`, OSI license (MIT ✔), README ✔,
   screenshots in `docs/screenshots/`.
-- A published GitHub **Release** with the `.txz` + `.sha256`, and a `vm.sentinel.plg`
+- A published GitHub **Release** with the `.txz` + `.sha256`, and a `reelsentry.plg`
   on `main` whose `packageURL`/`<SHA256>` point at that release (see RELEASE.md).
 - All `YOUR_*` placeholders replaced (see [`MAINTAINER-CHECKLIST.md`](MAINTAINER-CHECKLIST.md)).
 
@@ -21,7 +21,7 @@
 
 ## 3. Live scan steps
 - CA runs an automated scan (dockerHub/URL reachability, template shape, icon
-  reachability). Ensure the icon URL (`assets/vm-sentinel-128.png` raw link) and
+  reachability). Ensure the icon URL (`assets/reelsentry-128.png` raw link) and
   `PluginURL` resolve publicly.
 
 ## 4. Duplicate check

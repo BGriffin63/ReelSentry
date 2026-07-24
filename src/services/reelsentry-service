@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# VM Sentinel — service supervisor (spec §7, §20). Started by the .plg and on
+# ReelSentry — service supervisor (spec §7, §20). Started by the .plg and on
 # array-start; stopped on plugin removal / array-stop. Opens NO inbound port.
 # SPDX-License-Identifier: MIT
 
 set -u
-VMS_PLUGIN_ROOT="${VMS_PLUGIN_ROOT:-/usr/local/emhttp/plugins/vm.sentinel}"
+VMS_PLUGIN_ROOT="${VMS_PLUGIN_ROOT:-/usr/local/emhttp/plugins/reelsentry}"
 VMS_LIBDIR="${VMS_LIBDIR:-${VMS_PLUGIN_ROOT}/lib}"
 export VMS_LIBDIR
 export VMS_NOTIFYDIR="${VMS_NOTIFYDIR:-${VMS_PLUGIN_ROOT}/notifications}"

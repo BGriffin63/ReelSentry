@@ -1,6 +1,6 @@
 <?php
 /**
- * VM Sentinel — settings POST handler (spec §13, §18).
+ * ReelSentry — settings POST handler (spec §13, §18).
  * SPDX-License-Identifier: MIT
  *
  * All state-changing actions funnel through here. Every request is CSRF-checked.
@@ -30,7 +30,7 @@ case 'save_global':
         if (isset($_POST[$t]) && preg_match('/^\d{2}:\d{2}$/', $_POST[$t])) $cfg[$t] = $_POST[$t];
     if (isset($_POST['quiet_days']) && preg_match('/^[0-6](,[0-6])*$/', $_POST['quiet_days']))
         $cfg['quiet_days'] = $_POST['quiet_days'];
-    $cfg['discord_username'] = substr(preg_replace('/[^\P{C}]+/u','', (string)($_POST['discord_username'] ?? 'VM Sentinel')), 0, 80);
+    $cfg['discord_username'] = substr(preg_replace('/[^\P{C}]+/u','', (string)($_POST['discord_username'] ?? 'ReelSentry')), 0, 80);
     $av = trim((string)($_POST['discord_avatar'] ?? ''));
     $cfg['discord_avatar'] = preg_match('#^https://#', $av) ? $av : '';
     $cfg['discord_mention_role'] = preg_match('/^\d{1,25}$/', (string)($_POST['discord_mention_role'] ?? '')) ? $_POST['discord_mention_role'] : '';

@@ -1,15 +1,15 @@
-# VM Sentinel — Configuration Reference (spec §8, §15)
+# ReelSentry — Configuration Reference (spec §8, §15)
 
-Configuration is edited in the WebGUI (**Settings → VM Sentinel**). This document
+Configuration is edited in the WebGUI (**Settings → ReelSentry**). This document
 describes what is stored, where, and every setting.
 
 ## Files
 
 | File | Perms | Purpose |
 |------|-------|---------|
-| `/boot/config/plugins/vm.sentinel/config.json` | 0644 | Canonical, human-readable settings. Atomic writes; `.bak` kept. |
-| `/boot/config/plugins/vm.sentinel/config.snapshot` | 0644 | Flat, tab-delimited cache the bash services read (regenerated from `config.json`). |
-| `/boot/config/plugins/vm.sentinel/secrets.json` | 0600 | Discord webhook only. Never logged/exported. |
+| `/boot/config/plugins/reelsentry/config.json` | 0644 | Canonical, human-readable settings. Atomic writes; `.bak` kept. |
+| `/boot/config/plugins/reelsentry/config.snapshot` | 0644 | Flat, tab-delimited cache the bash services read (regenerated from `config.json`). |
+| `/boot/config/plugins/reelsentry/secrets.json` | 0600 | Discord webhook only. Never logged/exported. |
 
 Bash services never parse `config.json` (no `jq` dependency); the WebGUI writes
 both files atomically so they never diverge.
@@ -71,7 +71,7 @@ grace period. See [`ARCHITECTURE.md`](ARCHITECTURE.md) §6.
 
 ## Storage locations (runtime & history)
 
-- Runtime (spool, locks, health state, PID): `/var/run/vm.sentinel/` (tmpfs).
-- History: `/mnt/user/appdata/vm.sentinel/history/history.jsonl`, falling back to
-  `/var/log/vm.sentinel/history/` if appdata is unavailable. Rotated by count +
+- Runtime (spool, locks, health state, PID): `/var/run/reelsentry/` (tmpfs).
+- History: `/mnt/user/appdata/reelsentry/history/history.jsonl`, falling back to
+  `/var/log/reelsentry/history/` if appdata is unavailable. Rotated by count +
   age. Never written to `/boot`.

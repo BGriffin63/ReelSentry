@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — run all tests (spec §27, §28). SPDX-License-Identifier: MIT
+# ReelSentry — run all tests (spec §27, §28). SPDX-License-Identifier: MIT
 set -uo pipefail
 TESTS_ROOT="$(cd "$(dirname "$0")" && pwd)"
 total_fail=0; files=0

@@ -1,6 +1,6 @@
 <?php
 /**
- * VM Sentinel — shared WebGUI helpers (spec §13, §18).
+ * ReelSentry — shared WebGUI helpers (spec §13, §18).
  * SPDX-License-Identifier: MIT
  *
  * Responsibilities:
@@ -13,13 +13,13 @@
  * This file performs NO output when included.
  */
 
-const VMS_ID          = 'vm.sentinel';
-const VMS_CONFIG_DIR   = '/boot/config/plugins/vm.sentinel';
-const VMS_CONFIG_FILE  = '/boot/config/plugins/vm.sentinel/config.json';
-const VMS_SNAPSHOT     = '/boot/config/plugins/vm.sentinel/config.snapshot';
-const VMS_SECRETS_FILE = '/boot/config/plugins/vm.sentinel/secrets.json';
-const VMS_PLUGIN_ROOT  = '/usr/local/emhttp/plugins/vm.sentinel';
-const VMS_RUN_DIR      = '/var/run/vm.sentinel';
+const VMS_ID          = 'reelsentry';
+const VMS_CONFIG_DIR   = '/boot/config/plugins/reelsentry';
+const VMS_CONFIG_FILE  = '/boot/config/plugins/reelsentry/config.json';
+const VMS_SNAPSHOT     = '/boot/config/plugins/reelsentry/config.snapshot';
+const VMS_SECRETS_FILE = '/boot/config/plugins/reelsentry/secrets.json';
+const VMS_PLUGIN_ROOT  = '/usr/local/emhttp/plugins/reelsentry';
+const VMS_RUN_DIR      = '/var/run/reelsentry';
 
 /** Built-in defaults; the source of truth for a fresh install (spec §31). */
 function vms_default_config(): array {
@@ -28,7 +28,7 @@ function vms_default_config(): array {
         'monitoring_enabled'        => 0,      // conservative until user sets up (spec §18.29)
         'native_enabled'            => 1,
         'discord_enabled'           => 0,
-        'discord_username'          => 'VM Sentinel',
+        'discord_username'          => 'ReelSentry',
         'discord_avatar'            => '',
         'discord_mention_role'      => '',
         'discord_mention_user'      => '',

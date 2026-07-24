@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/vm-sentinel-256.png" alt="VM Sentinel" width="128" height="128">
+  <img src="assets/reelsentry-256.png" alt="ReelSentry" width="128" height="128">
 </p>
 
-<h1 align="center">VM Sentinel</h1>
+<h1 align="center">ReelSentry</h1>
 <p align="center"><em>Monitor every VM. Know when something changes.</em></p>
 
 <p align="center">
@@ -11,18 +11,18 @@
   <img alt="license: MIT" src="https://img.shields.io/badge/license-MIT-green">
 </p>
 
-> **Beta software.** VM Sentinel is feature-complete for public testing but has
+> **Beta software.** ReelSentry is feature-complete for public testing but has
 > **not yet been validated on a broad matrix of real Unraid 7.2 hardware**. See
 > [Known limitations](#known-limitations) and [`docs/TESTING.md`](docs/TESTING.md).
 > Try it on a test system first.
 
-VM Sentinel is a native Unraid plugin that watches your virtual machines and
+ReelSentry is a native Unraid plugin that watches your virtual machines and
 tells you when something changes — a VM starts, stops, shuts down, crashes,
 pauses, resumes, or reboots. It records a local event history, sends alerts
 through Unraid's built-in notification system, and can optionally post rich
 alerts to a **Discord webhook** (no bot required).
 
-It is **fail-open by design**: a problem inside VM Sentinel can never stop a VM
+It is **fail-open by design**: a problem inside ReelSentry can never stop a VM
 from starting, stopping, or changing state.
 
 ---
@@ -31,7 +31,7 @@ from starting, stopping, or changing state.
 
 - **Lifecycle monitoring** through a *namespaced* libvirt hook that coexists with
   other plugins — it never replaces Unraid's shared QEMU hook.
-- **Honest classification** — VM Sentinel labels a stop as *normal*,
+- **Honest classification** — ReelSentry labels a stop as *normal*,
   *unexpected*, or *reason could not be determined*. It never pretends every stop
   is a crash.
 - **Native Unraid notifications** — alerts flow through whatever agents you
@@ -71,24 +71,24 @@ hardware): Overview, VM configuration, Notifications, Event history, Diagnostics
 
 Once accepted into Community Applications:
 1. Open **Apps** in Unraid.
-2. Search **VM Sentinel**.
+2. Search **ReelSentry**.
 3. Click **Install**.
-4. Open **Settings → VM Sentinel**.
+4. Open **Settings → ReelSentry**.
 
 ## Manual installation (for testing)
 
 1. In Unraid, go to **Plugins → Install Plugin**.
 2. Paste the raw `.plg` URL:
    ```
-   https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/vm.sentinel.plg
+   https://raw.githubusercontent.com/BGriffin63/ReelSentry/main/reelsentry.plg
    ```
-3. Click **Install**. VM Sentinel verifies your Unraid version and package
+3. Click **Install**. ReelSentry verifies your Unraid version and package
    checksum, installs its files, installs the libvirt hook, and starts its
    background service.
 
 ## Basic setup
 
-1. **Settings → VM Sentinel → Notifications** → turn **Enable monitoring** on.
+1. **Settings → ReelSentry → Notifications** → turn **Enable monitoring** on.
 2. **VMs** tab → pick which VMs to watch and which events matter.
 3. Leave **native Unraid notifications** on (default).
 4. *(Optional)* paste a **Discord webhook** and click **Send test**.
@@ -101,14 +101,14 @@ configure them; debug logging **off**.
 
 ## Native notification setup
 
-VM Sentinel uses Unraid's own notification system, so configure your delivery
+ReelSentry uses Unraid's own notification system, so configure your delivery
 methods under **Settings → Notifications** (email/agents). Anything you enable
-there receives VM Sentinel alerts automatically.
+there receives ReelSentry alerts automatically.
 
 ## Discord webhook setup
 
 See [`docs/DISCORD-SETUP.md`](docs/DISCORD-SETUP.md). In short: create a channel
-webhook in Discord, copy its URL, paste it into VM Sentinel, and send a test.
+webhook in Discord, copy its URL, paste it into ReelSentry, and send a test.
 **No Discord bot is required.** Treat the webhook URL like a password — VM
 Sentinel stores it with restricted permissions and redacts it everywhere.
 
@@ -135,22 +135,22 @@ isn't reported unhealthy while its OS comes up. Details in
 
 | Data | Location | Notes |
 |------|----------|-------|
-| Configuration | `/boot/config/plugins/vm.sentinel/config.json` | Tiny, atomic writes, survives reboot |
-| Secrets | `/boot/config/plugins/vm.sentinel/secrets.json` | `0600`, webhook only |
-| Event history | `/mnt/user/appdata/vm.sentinel/history/` | Rotated JSON Lines; falls back to `/var/log` |
-| Runtime (spool/locks/health) | `/var/run/vm.sentinel/` | tmpfs; never on the flash |
+| Configuration | `/boot/config/plugins/reelsentry/config.json` | Tiny, atomic writes, survives reboot |
+| Secrets | `/boot/config/plugins/reelsentry/secrets.json` | `0600`, webhook only |
+| Event history | `/mnt/user/appdata/reelsentry/history/` | Rotated JSON Lines; falls back to `/var/log` |
+| Runtime (spool/locks/health) | `/var/run/reelsentry/` | tmpfs; never on the flash |
 
 ## Uninstall behavior
 
-Removing the plugin stops the service, removes **only** VM Sentinel's own libvirt
+Removing the plugin stops the service, removes **only** ReelSentry's own libvirt
 hook, and clears runtime state. Your config/history under
-`/boot/config/plugins/vm.sentinel/` is **kept** by default; delete that folder to
+`/boot/config/plugins/reelsentry/` is **kept** by default; delete that folder to
 fully remove everything. Running VMs are never affected. See
 [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md).
 
 ## Troubleshooting
 
-Start with **Settings → VM Sentinel → Diagnostics** and
+Start with **Settings → ReelSentry → Diagnostics** and
 [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md).
 
 ## Support
@@ -170,7 +170,7 @@ Run `scripts/lint.sh` and `scripts/test.sh` before opening a PR.
   hook mechanism and Unraid `notify` flags are documented but must be confirmed
   on-device (see [`docs/RESEARCH.md`](docs/RESEARCH.md) §7).
 - Intent detection is **honest, not perfect** — libvirt does not always reveal
-  why a VM stopped; VM Sentinel says so rather than guessing "crash."
+  why a VM stopped; ReelSentry says so rather than guessing "crash."
 - No automatic VM restart/recovery in v1 (by design).
 - QEMU guest-agent health check requires the agent inside the guest.
 
@@ -180,6 +180,6 @@ Run `scripts/lint.sh` and `scripts/test.sh` before opening a PR.
 
 ## Non-affiliation
 
-VM Sentinel is an independent community project for Unraid OS and is **not
+ReelSentry is an independent community project for Unraid OS and is **not
 affiliated with or endorsed by Lime Technology, Inc.** "Unraid" is a trademark of
 Lime Technology, Inc.

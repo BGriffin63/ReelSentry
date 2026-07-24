@@ -8,11 +8,11 @@ vms_test_env
 trap vms_test_cleanup EXIT
 
 export VMS_HOOK_ROOT="$VMS_ROOT_TMP/etc-libvirt-hooks"
-export VMS_HOOK_SOURCE="$REPO_ROOT/src/hooks/vm-sentinel-hook"
+export VMS_HOOK_SOURCE="$REPO_ROOT/src/hooks/reelsentry-hook"
 # shellcheck source=/dev/null
 . "$REPO_ROOT/src/hooks/install-hook.sh"
 
-target="$VMS_HOOK_ROOT/qemu.d/50-vm-sentinel"
+target="$VMS_HOOK_ROOT/qemu.d/50-reelsentry"
 
 # Install.
 install_hook >/dev/null
@@ -29,7 +29,7 @@ assert_true  "installed hook passes bash -n" "bash -n '$target'"
 # Ownership marker must be present (for surgical uninstall) but NOT on line 1.
 assert_true  "hook recognized as ours" "hook_is_ours '$target'"
 line1=$(head -n1 "$target")
-assert_ne    "marker is not on line 1" "$line1" "# VM-SENTINEL-OWNED-HOOK v1"
+assert_ne    "marker is not on line 1" "$line1" "# REELSENTRY-OWNED-HOOK v1"
 
 # Fail-open: the 'prepare' phase must exit 0 with ZERO dependencies. Run the file
 # via bash directly (portable) with a bogus libdir so any sourcing would fail —

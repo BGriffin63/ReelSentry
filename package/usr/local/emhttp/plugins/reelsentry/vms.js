@@ -1,4 +1,4 @@
-/* VM Sentinel — WebGUI helper JS (spec §13). No external dependencies.
+/* ReelSentry — WebGUI helper JS (spec §13). No external dependencies.
  * SPDX-License-Identifier: MIT
  * Posts are CSRF-protected: csrf_token is injected by each page from Unraid.
  */
@@ -8,7 +8,7 @@
     var body = new URLSearchParams();
     body.append('csrf_token', w.VMS_CSRF || '');
     Object.keys(data).forEach(function (k) { body.append(k, data[k]); });
-    return fetch('/plugins/vm.sentinel/include/save.php', {
+    return fetch('/plugins/reelsentry/include/save.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: body.toString(),

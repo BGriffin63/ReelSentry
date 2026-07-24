@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  VM Sentinel — Community Applications maintainer/repository profile (spec §22).
+  ReelSentry — Community Applications maintainer/repository profile (spec §22).
   SPDX-License-Identifier: MIT
 
   A profile describes the maintainer and repository so Community Applications can
@@ -10,12 +10,12 @@
 <Profile>
   <Author>BGriffin63</Author>
   <GitHub>BGriffin63</GitHub>
-  <Repository>https://github.com/BGriffin63/unraid-vm-sentinel</Repository>
-  <Support>https://github.com/BGriffin63/unraid-vm-sentinel/issues</Support>
-  <Project>https://github.com/BGriffin63/unraid-vm-sentinel</Project>
+  <Repository>https://github.com/BGriffin63/ReelSentry</Repository>
+  <Support>https://github.com/BGriffin63/ReelSentry/issues</Support>
+  <Project>https://github.com/BGriffin63/ReelSentry</Project>
   <Language>en_US</Language>
   <PluginRepository>true</PluginRepository>
   <Plugins>
-    <Plugin>vm-sentinel.xml</Plugin>
+    <Plugin>reelsentry.xml</Plugin>
   </Plugins>
 </Profile>

@@ -1,6 +1,6 @@
-# VM Sentinel — Event Model (spec §5, §7)
+# ReelSentry — Event Model (spec §5, §7)
 
-VM Sentinel normalizes raw libvirt hook actions into a stable internal event
+ReelSentry normalizes raw libvirt hook actions into a stable internal event
 vocabulary, then classifies intent. The mapping is the single source of truth in
 [`../src/lib/normalize.sh`](../src/lib/normalize.sh) and
 [`../src/lib/classify.sh`](../src/lib/classify.sh), covered by
@@ -48,7 +48,7 @@ Three honest values: `expected`, `unexpected`, `indeterminate`.
 **Maintenance context** is a best-effort marker set when the array is stopping or
 VM Manager is shutting down (if a reliable signal exists on the host). When
 present, mass VM stops are labeled maintenance rather than crashes. When no
-reliable signal exists, VM Sentinel does **not** guess — it uses
+reliable signal exists, ReelSentry does **not** guess — it uses
 `indeterminate`.
 
 ## Severity

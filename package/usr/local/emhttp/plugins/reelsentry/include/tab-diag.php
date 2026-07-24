@@ -1,6 +1,6 @@
 <?php
-/* VM Sentinel — Diagnostics tab (spec §13.5). SPDX-License-Identifier: MIT
-   Included by VMSentinel.page; shares its scope. */
+/* ReelSentry — Diagnostics tab (spec §13.5). SPDX-License-Identifier: MIT
+   Included by ReelSentry.page; shares its scope. */
 $s = json_decode(vms_run('services/diagnostics.sh', ['status']), true) ?: [];
 if (!function_exists('vms_ynbadge')) {
     function vms_ynbadge($b){ return $b ? '<span class="vms-badge vms-ok">yes</span>' : '<span class="vms-badge vms-warn">no</span>'; }
@@ -21,7 +21,7 @@ if (!function_exists('vms_ynbadge')) {
 </table>
 <p>
   <button type="button" onclick="VMS.testNotify('all',document.getElementById('vmsDf'))">Test all notifications</button>
-  <a class="button" href="/plugins/vm.sentinel/include/download-diagnostics.php">Download diagnostics (sanitized)</a>
+  <a class="button" href="/plugins/reelsentry/include/download-diagnostics.php">Download diagnostics (sanitized)</a>
   <span id="vmsDf" class="vms-flash"></span>
 </p>
 <p class="vms-help">The diagnostics bundle redacts the Discord webhook and any other secrets before download.</p>

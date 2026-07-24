@@ -13,7 +13,7 @@ export EV_EVENT_ID=e1 EV_SERVER=TOWER EV_VM_UUID=00000000-0000-0000-0000-0000000
        EV_PREVIOUS_STATE=running EV_CURRENT_STATE=stopped EV_HEALTH_STATE=n/a \
        EV_SUMMARY='Evil "}]}crashed' EV_DETAILS='line1
 line2 "quoted"'
-printf 'G\tdiscord_username\tVM Sentinel\n' > "$VMS_CONFIG_SNAPSHOT"
+printf 'G\tdiscord_username\tReelSentry\n' > "$VMS_CONFIG_SNAPSHOT"
 
 payload=$(discord_build_payload)
 assert_contains "payload has embeds" "$payload" '"embeds"'

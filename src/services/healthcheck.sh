@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — agentless health checks with stateful transitions (spec §9).
+# ReelSentry — agentless health checks with stateful transitions (spec §9).
 # SPDX-License-Identifier: MIT
 #
 # Opt-in, disabled by default. Only CONFIRMED transitions to Unhealthy and
@@ -8,8 +8,8 @@
 # guest boot. Minimum interval clamped to VMS_HEALTH_MIN_INTERVAL.
 
 set -u
-VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
-VMS_NOTIFYDIR="${VMS_NOTIFYDIR:-/usr/local/emhttp/plugins/vm.sentinel/notifications}"
+VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/reelsentry/lib}"
+VMS_NOTIFYDIR="${VMS_NOTIFYDIR:-/usr/local/emhttp/plugins/reelsentry/notifications}"
 # shellcheck source=/dev/null
 for f in common validate json redact log config queue history inventory classify; do
     . "${VMS_LIBDIR}/${f}.sh" || exit 1

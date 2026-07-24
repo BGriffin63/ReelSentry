@@ -14,16 +14,16 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
       - name: Validate .plg and CA templates are well-formed XML
         run: |
-          xmllint --noout vm.sentinel.plg
-          xmllint --noout templates/vm-sentinel.xml
+          xmllint --noout reelsentry.plg
+          xmllint --noout templates/reelsentry.xml
           xmllint --noout templates/ca_profile.xml
       - name: Check required CA fields are present
         run: |
           set -e
           for field in Name Repository PluginURL Category Icon MinVer Overview; do
-            grep -q "<$field>" templates/vm-sentinel.xml || { echo "Missing <$field> in CA template"; exit 1; }
+            grep -q "<$field>" templates/reelsentry.xml || { echo "Missing <$field> in CA template"; exit 1; }
           done
-          grep -q 'min="7.2.0"' vm.sentinel.plg || { echo ".plg missing min=7.2.0"; exit 1; }
+          grep -q 'min="7.2.0"' reelsentry.plg || { echo ".plg missing min=7.2.0"; exit 1; }
           echo "CA template fields present."
       # NOTE (maintainer): when CA publishes an official schema/validator, add it
       # here. This job only checks well-formedness + required fields.

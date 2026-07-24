@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# VM Sentinel — set a maintenance suppression window (spec §16).
+# ReelSentry — set a maintenance suppression window (spec §16).
 # SPDX-License-Identifier: MIT
 # Usage: suppress.sh {all|<uuid>} <minutes>   Records the suppression in history.
 set -u
-VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
+VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/reelsentry/lib}"
 # shellcheck source=/dev/null
 for f in common validate json redact log config queue history; do . "${VMS_LIBDIR}/${f}.sh" || exit 1; done
 

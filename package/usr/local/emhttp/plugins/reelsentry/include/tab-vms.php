@@ -1,6 +1,6 @@
 <?php
-/* VM Sentinel — VMs tab (spec §8, §13.2). SPDX-License-Identifier: MIT
-   Included by VMSentinel.page; shares its scope ($cfg is already set). */
+/* ReelSentry — VMs tab (spec §8, §13.2). SPDX-License-Identifier: MIT
+   Included by ReelSentry.page; shares its scope ($cfg is already set). */
 $inv_v = vms_inventory();
 $all_v = $inv_v;
 foreach (($cfg['vms'] ?? []) as $u => $ov) if (!isset($all_v[$u])) $all_v[$u] = ($ov['name'] ?? $u).' (unavailable)';

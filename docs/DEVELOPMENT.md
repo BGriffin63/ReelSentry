@@ -1,4 +1,4 @@
-# VM Sentinel — Development Guide
+# ReelSentry — Development Guide
 
 ## Layout
 
@@ -7,7 +7,7 @@ src/lib/           pure bash libraries (unit-testable off Unraid)
 src/hooks/         libvirt hook + idempotent installer
 src/notifications/ provider interface + native + discord + dispatcher
 src/services/      processor, healthcheck, supervisor, tools
-package/…/vm.sentinel/  WebGUI (PHP .page files, include/, js, css, icon)
+package/…/reelsentry/  WebGUI (PHP .page files, include/, js, css, icon)
 tests/             unit + security + integration (bash harness)
 scripts/           build / package / release / lint / test / validate / icons
 ```

@@ -1,6 +1,6 @@
 <?php
-/* VM Sentinel — Overview tab (spec §13.1). SPDX-License-Identifier: MIT
-   Included by VMSentinel.page; shares its scope ($cfg is already set). */
+/* ReelSentry — Overview tab (spec §13.1). SPDX-License-Identifier: MIT
+   Included by ReelSentry.page; shares its scope ($cfg is already set). */
 $status = json_decode(vms_run('services/diagnostics.sh', ['status']), true) ?: [];
 $inv = vms_inventory();
 $running = 0; $healthy = 0; $unhealthy = 0; $nohc = 0;

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — common paths and helpers.
+# ReelSentry — common paths and helpers.
 # SPDX-License-Identifier: MIT
 # This file is sourced, never executed. It must not call `exit`.
 #
@@ -7,8 +7,8 @@
 # entirely outside Unraid against a temporary filesystem.
 
 # --- Identity -----------------------------------------------------------------
-: "${VMS_ID:=vm.sentinel}"
-: "${VMS_NAME:=VM Sentinel}"
+: "${VMS_ID:=reelsentry}"
+: "${VMS_NAME:=ReelSentry}"
 
 # --- Persistent config (small, survives reboot; on the flash) -----------------
 : "${VMS_CONFIG_DIR:=/boot/config/plugins/${VMS_ID}}"
@@ -31,7 +31,7 @@
 
 # --- Logging ------------------------------------------------------------------
 : "${VMS_LOG_DIR:=/var/log/${VMS_ID}}"
-: "${VMS_LOG_FILE:=${VMS_LOG_DIR}/vm-sentinel.log}"
+: "${VMS_LOG_FILE:=${VMS_LOG_DIR}/reelsentry.log}"
 : "${VMS_LOG_MAX_BYTES:=1048576}"   # 1 MiB then rotate
 : "${VMS_LOG_KEEP:=3}"
 : "${VMS_DEBUG:=0}"

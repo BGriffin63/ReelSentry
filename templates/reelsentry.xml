@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  VM Sentinel — Community Applications template (spec §22).
+  ReelSentry — Community Applications template (spec §22).
   SPDX-License-Identifier: MIT
 
   This is the app-feed entry a Community Applications moderator reviews. Fields
@@ -11,24 +11,24 @@
   Replace every YOUR_* placeholder (see docs/MAINTAINER-CHECKLIST.md).
 -->
 <PluginEntry>
-  <Name>VM Sentinel</Name>
-  <Repository>BGriffin63/unraid-vm-sentinel</Repository>
-  <Registry>https://github.com/BGriffin63/unraid-vm-sentinel</Registry>
+  <Name>ReelSentry</Name>
+  <Repository>BGriffin63/ReelSentry</Repository>
+  <Registry>https://github.com/BGriffin63/ReelSentry</Registry>
   <Branch>
     <Tag>main</Tag>
   </Branch>
-  <PluginURL>https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/vm.sentinel.plg</PluginURL>
-  <Project>https://github.com/BGriffin63/unraid-vm-sentinel</Project>
-  <Support>https://github.com/BGriffin63/unraid-vm-sentinel/issues</Support>
+  <PluginURL>https://raw.githubusercontent.com/BGriffin63/ReelSentry/main/reelsentry.plg</PluginURL>
+  <Project>https://github.com/BGriffin63/ReelSentry</Project>
+  <Support>https://github.com/BGriffin63/ReelSentry/issues</Support>
   <Category>Tools: Utilities Status:Beta</Category>
-  <Icon>https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/assets/vm-sentinel-128.png</Icon>
-  <Screenshot>https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/docs/screenshots/overview.png</Screenshot>
+  <Icon>https://raw.githubusercontent.com/BGriffin63/ReelSentry/main/assets/reelsentry-128.png</Icon>
+  <Screenshot>https://raw.githubusercontent.com/BGriffin63/ReelSentry/main/docs/screenshots/overview.png</Screenshot>
   <MinVer>7.2.0</MinVer>
   <Beta>true</Beta>
   <Author>BGriffin63</Author>
   <Language>en_US</Language>
   <Overview>
-VM Sentinel monitors your Unraid virtual machines and tells you when something
+ReelSentry monitors your Unraid virtual machines and tells you when something
 changes. It watches VM lifecycle events (start, stop, shutdown, crash, pause,
 resume, reboot) through a namespaced libvirt hook that coexists safely with
 other plugins, records a local event history, and sends alerts through Unraid's
@@ -38,16 +38,16 @@ Optional agentless health checks (ICMP ping, TCP port, QEMU guest agent) tell
 you when a VM is running but not actually responding — with anti-spam thresholds
 so you are notified only on confirmed failure and recovery.
 
-VM Sentinel is fail-open by design: a problem inside the plugin can never stop a
+ReelSentry is fail-open by design: a problem inside the plugin can never stop a
 VM from starting, stopping, or changing state. It never modifies VM XML, never
 replaces shared QEMU hooks, opens no inbound ports, and collects no telemetry.
 
-VM Sentinel is an independent community project and is not affiliated with or
+ReelSentry is an independent community project and is not affiliated with or
 endorsed by Lime Technology, Inc.
   </Overview>
   <Changes>See the CHANGELOG in the repository.</Changes>
   <Privacy>
-VM Sentinel collects no telemetry and contacts no developer-controlled servers.
+ReelSentry collects no telemetry and contacts no developer-controlled servers.
 The only outbound network traffic is a Discord webhook YOU configure, and calls
 to Unraid's local notification agent. The Discord webhook URL is stored locally
 with restricted permissions and is redacted in all logs, diagnostics, and exports.

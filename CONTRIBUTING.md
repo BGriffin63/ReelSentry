@@ -1,6 +1,6 @@
-# Contributing to VM Sentinel
+# Contributing to ReelSentry
 
-Thanks for your interest! VM Sentinel is host-level software for Unraid, so
+Thanks for your interest! ReelSentry is host-level software for Unraid, so
 safety and least-privilege are non-negotiable.
 
 ## Before you start

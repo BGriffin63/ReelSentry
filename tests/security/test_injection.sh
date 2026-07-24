@@ -31,7 +31,7 @@ malicious=(
 )
 
 for name in "${malicious[@]}"; do
-    bash "$REPO_ROOT/src/hooks/vm-sentinel-hook" "$name" stopped end - >/dev/null 2>&1
+    bash "$REPO_ROOT/src/hooks/reelsentry-hook" "$name" stopped end - >/dev/null 2>&1
 done
 # Hook must always succeed (fail-open)
 assert_eq "hook exit 0 on last" "$?" "0"

@@ -1,21 +1,21 @@
 Menu="OtherSettings"
-Title="VM Sentinel"
-Icon="vm-sentinel.png"
+Title="ReelSentry"
+Icon="reelsentry.png"
 ---
 <?php
-/* VM Sentinel — single settings page with in-page tabs (spec §13).
+/* ReelSentry — single settings page with in-page tabs (spec §13).
    SPDX-License-Identifier: MIT
    Consolidated from 5 pages: Unraid's multi-level .page nesting rendered the
    body blank on 7.2, so all sections live here as JS tab panes (guaranteed to
    render). Each tab's markup is a small include sharing this page's scope. */
-require_once '/usr/local/emhttp/plugins/vm.sentinel/include/vms-common.php';
+require_once '/usr/local/emhttp/plugins/reelsentry/include/vms-common.php';
 $cfg  = vms_read_config();
 $csrf = vms_csrf_token();
-$P = '/usr/local/emhttp/plugins/vm.sentinel/include';
+$P = '/usr/local/emhttp/plugins/reelsentry/include';
 ?>
-<link rel="stylesheet" href="/plugins/vm.sentinel/vms.css">
+<link rel="stylesheet" href="/plugins/reelsentry/vms.css">
 <script>window.VMS_CSRF=<?=json_encode($csrf)?>;</script>
-<script src="/plugins/vm.sentinel/vms.js"></script>
+<script src="/plugins/reelsentry/vms.js"></script>
 
 <style>
 .vms-tabs{display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid rgba(128,128,128,.3);margin:4px 0 16px}
@@ -40,7 +40,7 @@ $P = '/usr/local/emhttp/plugins/vm.sentinel/include';
   <div class="vms-tabpane" id="tab-history"><?php include "$P/tab-history.php"; ?></div>
   <div class="vms-tabpane" id="tab-diag"><?php include "$P/tab-diag.php"; ?></div>
 
-  <p class="vms-nonaffiliation">VM Sentinel is an independent community project for Unraid OS and is
+  <p class="vms-nonaffiliation">ReelSentry is an independent community project for Unraid OS and is
   not affiliated with or endorsed by Lime Technology, Inc.</p>
 </div>
 

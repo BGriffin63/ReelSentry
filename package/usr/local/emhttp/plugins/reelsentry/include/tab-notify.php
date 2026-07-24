@@ -1,6 +1,6 @@
 <?php
-/* VM Sentinel — Notifications tab (spec §10,§11,§13.3,§16). SPDX-License-Identifier: MIT
-   Included by VMSentinel.page; shares its scope ($cfg is already set).
+/* ReelSentry — Notifications tab (spec §10,§11,§13.3,§16). SPDX-License-Identifier: MIT
+   Included by ReelSentry.page; shares its scope ($cfg is already set).
    Secrets are NEVER echoed: only a redacted webhook representation is shown. */
 $webhookRedacted = vms_redact_webhook(vms_read_secret_webhook());
 $cc = function($k,$d=0) use ($cfg){ return (int)($cfg[$k] ?? $d) ? 'checked':''; };
@@ -35,7 +35,7 @@ $cc = function($k,$d=0) use ($cfg){ return (int)($cfg[$k] ?? $d) ? 'checked':'';
 
   <h3>Discord webhook</h3>
   <label><input type="checkbox" name="discord_enabled" value="1" <?=$cc('discord_enabled')?>> Enable Discord webhook alerts</label>
-  <label>Display name override: <input type="text" name="discord_username" value="<?=h($cfg['discord_username']??'VM Sentinel')?>"></label>
+  <label>Display name override: <input type="text" name="discord_username" value="<?=h($cfg['discord_username']??'ReelSentry')?>"></label>
   <label>Avatar URL (https): <input type="text" name="discord_avatar" value="<?=h($cfg['discord_avatar']??'')?>"></label>
   <label>Mention role ID: <input type="text" name="discord_mention_role" value="<?=h($cfg['discord_mention_role']??'')?>"></label>
   <label>Mention user ID: <input type="text" name="discord_mention_user" value="<?=h($cfg['discord_mention_user']??'')?>"></label>

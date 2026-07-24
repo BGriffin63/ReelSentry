@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — libvirt/virsh inventory with graceful degradation (spec §19).
+# ReelSentry — libvirt/virsh inventory with graceful degradation (spec §19).
 # SPDX-License-Identifier: MIT
 # Sourced, never executed. No `exit`. Depends on common.sh, validate.sh.
 #

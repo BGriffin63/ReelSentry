@@ -1,8 +1,8 @@
-# VM Sentinel — Branding Guidelines (spec §4)
+# ReelSentry — Branding Guidelines (spec §4)
 
 ## The mark
 
-VM Sentinel's logo is an original, hand-authored/programmatic mark:
+ReelSentry's logo is an original, hand-authored/programmatic mark:
 
 - **Shield** — monitoring & protection.
 - **VM window** (rectangle with a title bar + two dots) — virtualization.
@@ -17,11 +17,11 @@ required.
 
 | File | Use |
 |------|-----|
-| `assets/vm-sentinel.svg` | Full-color master (viewBox 0 0 128 128). |
-| `assets/vm-sentinel-monochrome.svg` | Single-color (`currentColor`) for menus/dark & light UIs. |
-| `assets/vm-sentinel-512.png` / `-256` / `-128` | Raster sizes (CA icon uses 128). |
-| `assets/vm-sentinel-48.png` / `-32.png` | Small UI / favicon sizes. |
-| `assets/vm-sentinel.png` | 48px copy used as the WebGUI plugin icon. |
+| `assets/reelsentry.svg` | Full-color master (viewBox 0 0 128 128). |
+| `assets/reelsentry-monochrome.svg` | Single-color (`currentColor`) for menus/dark & light UIs. |
+| `assets/reelsentry-512.png` / `-256` / `-128` | Raster sizes (CA icon uses 128). |
+| `assets/reelsentry-48.png` / `-32.png` | Small UI / favicon sizes. |
+| `assets/reelsentry.png` | 48px copy used as the WebGUI plugin icon. |
 
 The PNGs are **generated** from geometry by
 [`../scripts/generate-icons.py`](../scripts/generate-icons.py) using only the

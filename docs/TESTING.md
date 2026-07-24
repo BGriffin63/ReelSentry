@@ -1,4 +1,4 @@
-# VM Sentinel — Testing (spec §27)
+# ReelSentry — Testing (spec §27)
 
 ## Automated tests (run anywhere)
 
@@ -34,7 +34,7 @@ results here. Until every row passes, the release verdict stays at most
 |---|----------|----------|--------|
 | 1 | Clean 7.2 install via `.plg` | Installs, appears under Settings, service running | ☐ |
 | 2 | Existing production-like server | Installs without disturbing other plugins/hooks | ☐ |
-| 3 | Existing unrelated `qemu.d/` hook present | Both hooks run; ours is `50-vm-sentinel` | ☐ |
+| 3 | Existing unrelated `qemu.d/` hook present | Both hooks run; ours is `50-reelsentry` | ☐ |
 | 4 | VM Manager disabled | GUI shows warning, no crash | ☐ |
 | 5 | Windows VM lifecycle (start/stop/shutdown/crash) | Correct events + classification | ☐ |
 | 6 | Linux VM lifecycle | Correct events | ☐ |
@@ -49,7 +49,7 @@ results here. Until every row passes, the release verdict stays at most
 | 15 | Health check: ICMP/TCP fail then recover | Unhealthy after threshold, Recovered after threshold, no spam | ☐ |
 | 16 | Startup grace | No false unhealthy during boot | ☐ |
 | 17 | Quiet hours + critical bypass | Suppressed except critical | ☐ |
-| 18 | Upgrade from previous VM Sentinel | Settings preserved, migration runs | ☐ |
+| 18 | Upgrade from previous ReelSentry | Settings preserved, migration runs | ☐ |
 | 19 | Reinstall | Idempotent, no duplicate hook | ☐ |
 | 20 | Uninstall with running VMs | Only our hook removed; VMs unaffected; config kept | ☐ |
 | 21 | Diagnostics bundle | Downloads; contains **no** secrets | ☐ |

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VM Sentinel — lint shell + PHP + XML (spec §28).
+# ReelSentry — lint shell + PHP + XML (spec §28).
 # SPDX-License-Identifier: MIT
 set -uo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -8,7 +8,7 @@ rc=0
 echo "==> ShellCheck"
 if command -v shellcheck >/dev/null 2>&1; then
     # -x follows sourced files; -e SC1091 ignores un-followable sources in CI.
-    mapfile -t sh < <(find "$ROOT/src" "$ROOT/scripts" -type f \( -name '*.sh' -o -name 'vm-sentinel-hook' -o -name 'vm-sentinel-service' \))
+    mapfile -t sh < <(find "$ROOT/src" "$ROOT/scripts" -type f \( -name '*.sh' -o -name 'reelsentry-hook' -o -name 'reelsentry-service' \))
     shellcheck -x -S warning "${sh[@]}" || rc=1
 else
     echo "   shellcheck not installed; skipping (CI installs it)"
@@ -24,7 +24,7 @@ fi
 
 echo "==> XML well-formedness"
 if command -v xmllint >/dev/null 2>&1; then
-    xmllint --noout "$ROOT/vm.sentinel.plg" || rc=1
+    xmllint --noout "$ROOT/reelsentry.plg" || rc=1
     for x in "$ROOT"/templates/*.xml; do xmllint --noout "$x" || rc=1; done
 else
     echo "   xmllint not installed; skipping (CI installs it)"
