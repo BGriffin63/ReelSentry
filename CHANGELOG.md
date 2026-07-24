@@ -8,6 +8,19 @@ All notable changes to VM Sentinel are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.1.7] — 2026-07-24
+### Fixed
+- **Lifecycle events were captured but never notified** ("Notified: —" for every
+  row). Saving the Notifications page wrote every "notify on X" toggle as 0,
+  because those fields only existed on the VMs tab yet were in the global save
+  whitelist — so saving the page wiped the defaults to off.
+### Added
+- **Global "Notify on these events" defaults** on the Notifications tab (start,
+  stop, shutdown, crash, reboot, pause, resume, health fail/recover), so you can
+  say "ping me every time any VM goes down or comes up" in one place. Per-VM
+  overrides remain in the VMs tab. This also makes the save handler correct
+  (every field it writes now exists on the form).
+
 ## [0.1.6] — 2026-07-24
 ### Fixed
 - **Discord "Send test" failed unless Discord alerts were already enabled.** The
@@ -111,7 +124,8 @@ All notable changes to VM Sentinel are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.6...HEAD
+[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.7...HEAD
+[0.1.7]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.7
 [0.1.6]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.6
 [0.1.5]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.5
 [0.1.4]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.4

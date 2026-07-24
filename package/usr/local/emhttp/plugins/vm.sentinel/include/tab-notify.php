@@ -11,6 +11,22 @@ $cc = function($k,$d=0) use ($cfg){ return (int)($cfg[$k] ?? $d) ? 'checked':'';
   <label><input type="checkbox" name="monitoring_enabled" value="1" <?=$cc('monitoring_enabled')?>> Enable monitoring</label>
   <p class="vms-help">Master switch. When off, no notifications are sent regardless of per-VM settings.</p>
 
+  <h3>Notify on these events (default for all VMs)</h3>
+  <p class="vms-help">These are the defaults applied to every monitored VM. You can override them per VM in the <b>VMs</b> tab.</p>
+  <?php foreach ([
+      'notify_start'    => 'VM comes up (start)',
+      'notify_stop'     => 'VM goes down (stop)',
+      'notify_shutdown' => 'Graceful shutdown',
+      'notify_crash'    => 'Crash / failure',
+      'notify_reboot'   => 'Reboot',
+      'notify_pause'    => 'Pause',
+      'notify_resume'   => 'Resume',
+      'notify_health_fail'    => 'Health check fails',
+      'notify_health_recover' => 'Health check recovers',
+  ] as $k => $lbl): ?>
+    <label style="display:inline-block;min-width:220px"><input type="checkbox" name="<?=$k?>" value="1" <?=$cc($k)?>> <?=$lbl?></label>
+  <?php endforeach; ?>
+
   <h3>Native Unraid notifications</h3>
   <label><input type="checkbox" name="native_enabled" value="1" <?=$cc('native_enabled',1)?>> Send through Unraid’s built-in notifications</label>
   <p class="vms-help">Uses whatever agents you configured under Settings → Notifications (email, agents, browser).</p>
