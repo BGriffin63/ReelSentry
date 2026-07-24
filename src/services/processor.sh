@@ -170,7 +170,7 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
         drain) process_drain ;;
         loop)
             while :; do
-                process_drain
+                ( process_drain ) || true   # a fault on one event can't kill the loop
                 # Short sleep; a hook 'trigger' file shortens perceived latency.
                 for _ in 1 2 3; do
                     [ -f "${VMS_RUN_DIR}/trigger" ] && { rm -f "${VMS_RUN_DIR}/trigger"; break; }

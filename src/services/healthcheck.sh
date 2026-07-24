@@ -202,7 +202,10 @@ hc_all() {
 if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
     case "${1:-once}" in
         once) hc_all ;;
-        loop) while :; do hc_all; sleep 15; done ;;
+        loop)
+            # Run each pass in a subshell so a `set -u` fault on one VM can never
+            # terminate the whole loop (keeps the health service alive).
+            while :; do ( hc_all ) || true; sleep 15; done ;;
         *) echo "usage: $0 {once|loop}" >&2; exit 2 ;;
     esac
 fi

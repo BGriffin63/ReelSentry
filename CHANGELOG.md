@@ -8,6 +8,17 @@ All notable changes to VM Sentinel are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.1.6] — 2026-07-24
+### Fixed
+- **Discord "Send test" failed unless Discord alerts were already enabled.** The
+  test button exists to validate a webhook *before* enabling it, but the provider
+  refused to run while `discord_enabled=0`. That gate lives in the dispatcher
+  (which controls live events); the provider no longer re-checks it, so the test
+  validates the saved webhook regardless of the enable toggle.
+- **Health-check service could stop.** The processor and health loops now run
+  each pass in a subshell, so a `set -u` fault on one VM can never terminate the
+  loop (the service stays alive).
+
 ## [0.1.5] — 2026-07-24
 ### Fixed
 - **Saves/tests still rejected with "Invalid CSRF token"** even after 0.1.4:
@@ -100,7 +111,8 @@ All notable changes to VM Sentinel are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.5...HEAD
+[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.6
 [0.1.5]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.5
 [0.1.4]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.4
 [0.1.3]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.3

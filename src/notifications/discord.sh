@@ -126,8 +126,11 @@ discord_post() {
 }
 
 # provider_discord_send: the provider entry point.
+# NOTE: the global "discord_enabled" gate lives in the dispatcher (dispatch.sh),
+# which decides whether real events reach this provider. This function does NOT
+# re-check it, so the WebGUI "Send test" button can validate a webhook BEFORE the
+# user enables Discord for live alerts.
 provider_discord_send() {
-    [ "$(config_get discord_enabled 0)" = "1" ] || { notify_result 1 0 "discord disabled"; return 0; }
     local url
     url=$(discord_read_webhook) || { notify_result 1 0 "no discord webhook configured"; return 0; }
     if ! valid_discord_webhook "$url"; then
