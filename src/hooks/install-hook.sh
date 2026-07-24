@@ -16,8 +16,10 @@ VMS_HOOK_NAME="50-vm-sentinel"
 VMS_HOOK_TARGET="${VMS_HOOK_D}/${VMS_HOOK_NAME}"
 VMS_HOOK_SOURCE="${VMS_HOOK_SOURCE:-/usr/local/emhttp/plugins/vm.sentinel/hooks/vm-sentinel-hook}"
 
-# A marker line lets us positively identify OUR file for surgical removal and to
-# recognize an existing correct install (idempotency).
+# The hook SOURCE carries this marker on line 2 (line 1 is the shebang). We copy
+# the source verbatim so the shebang is never displaced — a comment on line 1
+# would make the kernel refuse to exec the file ("Exec format error") and, during
+# the libvirt 'prepare' phase, that would block the VM from starting.
 VMS_HOOK_MARKER="# VM-SENTINEL-OWNED-HOOK v1"
 
 hook_is_ours() {
@@ -25,18 +27,24 @@ hook_is_ours() {
     head -n 20 "$1" 2>/dev/null | grep -qF "$VMS_HOOK_MARKER"
 }
 
-# install_hook: copy our hook into qemu.d/, mark it, make it executable.
+# install_hook: copy our hook VERBATIM into qemu.d/, make it executable.
 # Idempotent: re-running updates the payload in place, never duplicates.
 install_hook() {
     mkdir -p "$VMS_HOOK_D" 2>/dev/null || { echo "ERROR: cannot create $VMS_HOOK_D" >&2; return 1; }
     if [ ! -f "$VMS_HOOK_SOURCE" ]; then
         echo "ERROR: hook source missing: $VMS_HOOK_SOURCE" >&2; return 1
     fi
+    # Verify the source is a valid script (shebang on line 1, contains our marker)
+    # before we ever place it where libvirt will exec it.
+    case "$(head -c 2 "$VMS_HOOK_SOURCE" 2>/dev/null)" in
+        '#!') : ;;
+        *) echo "ERROR: hook source has no shebang on line 1; refusing to install" >&2; return 1 ;;
+    esac
+    if ! hook_is_ours "$VMS_HOOK_SOURCE"; then
+        echo "ERROR: hook source missing ownership marker; refusing to install" >&2; return 1
+    fi
     local tmp="${VMS_HOOK_TARGET}.tmp.$$"
-    {
-        printf '%s\n' "$VMS_HOOK_MARKER"
-        cat "$VMS_HOOK_SOURCE"
-    } > "$tmp" 2>/dev/null || { echo "ERROR: cannot stage hook" >&2; rm -f "$tmp"; return 1; }
+    cp -f "$VMS_HOOK_SOURCE" "$tmp" 2>/dev/null || { echo "ERROR: cannot stage hook" >&2; rm -f "$tmp"; return 1; }
     chmod 755 "$tmp" 2>/dev/null || true
     mv -f "$tmp" "$VMS_HOOK_TARGET" 2>/dev/null || { rm -f "$tmp"; echo "ERROR: cannot install hook" >&2; return 1; }
     echo "Installed hook: $VMS_HOOK_TARGET"

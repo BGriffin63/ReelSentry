@@ -1,19 +1,37 @@
-#!/usr/bin/env bash
-# VM Sentinel — libvirt qemu.d hook (spec §6). INSTALLED AS:
+#!/bin/bash
+# VM-SENTINEL-OWNED-HOOK v1
+# VM Sentinel — libvirt qemu.d hook (spec §6). INSTALLED VERBATIM AS:
 #     /etc/libvirt/hooks/qemu.d/50-vm-sentinel
 # SPDX-License-Identifier: MIT
+#
+# The shebang MUST stay on line 1 and the marker on line 2 (install-hook.sh
+# identifies ownership by the marker and copies this file verbatim, so the
+# shebang is never displaced — a displaced shebang causes libvirt "Exec format
+# error" and, during 'prepare', blocks the VM from starting).
 #
 # libvirt calls:  <this> <vm-name> <operation> <sub-operation> <extra>
 #
 # CRITICAL CONTRACT (fail-open, spec §1, §6):
 #   * This script is on the VM's lifecycle critical path.
-#   * It MUST return 0 quickly and MUST NOT do network/DNS/notification work.
-#   * Any internal failure must still exit 0 so the VM operation is unaffected.
+#   * libvirt treats a non-zero exit from the 'prepare' phase as FATAL and will
+#     refuse to start the VM. Therefore the 'prepare'/'reconnect' phases exit 0
+#     IMMEDIATELY, before sourcing anything, so nothing we do can ever veto a
+#     VM start.
+#   * Every other path also exits 0 quickly and does no network work.
 #   * VM name / argv are UNTRUSTED and are never evaluated as shell.
 
 # Guarantee exit 0 no matter what happens below.
 trap 'exit 0' EXIT
 set -u
+
+op=${2-}
+
+# The 'prepare' phase can veto a VM start; 'reconnect' is noise. Handle both with
+# ZERO dependencies (no sourcing, no filesystem writes) so a broken library, a
+# full disk, or anything else can never block a VM from starting.
+case "$op" in
+    prepare|reconnect) exit 0 ;;
+esac
 
 # Resolve our lib dir relative to the real plugin install (overridable for tests).
 VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
@@ -25,15 +43,8 @@ VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
 
 # Positional args from libvirt.
 vm_name_raw=${1-}
-op=${2-}
 sub=${3-}
 extra=${4-}
-
-# Bound work: ignore obviously irrelevant phases early to avoid spool churn.
-# We still record the useful ones; 'prepare'/'reconnect' are low value + noisy.
-case "${op}" in
-    prepare|reconnect) exit 0 ;;
-esac
 
 # Sanitize the name into a single, bounded, control-char-free field. It is NEVER
 # used as a shell token — spool_write base64-encodes it.
