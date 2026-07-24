@@ -8,7 +8,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "vm.sentinel">
   <!ENTITY author    "BGriffin63">
-  <!ENTITY version   "0.1.0">
+  <!ENTITY version   "0.1.1">
   <!ENTITY launch    "Settings/VMSentinel">
   <!ENTITY pluginURL "https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/vm.sentinel.plg">
   <!ENTITY gitURL    "https://github.com/BGriffin63/unraid-vm-sentinel">
