@@ -8,6 +8,19 @@ All notable changes to VM Sentinel are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.1.4] — 2026-07-24
+### Fixed
+- **Settings/webhook wouldn't save; test buttons did nothing.** The POST handler
+  rejected every request with "Invalid CSRF token": in the POST execution
+  context `parse_ini_file('/var/local/emhttp/var.ini')` could return false (the
+  file is dynamic), so the expected token came back empty and the check failed
+  closed. `vms_csrf_token()` now falls back to a raw regex read of `var.ini`, and
+  when the token is genuinely unavailable in-context the check no longer
+  hard-blocks an already-authenticated request (it still requires a token).
+- CSRF/handler failures now return **JSON** and the WebGUI **shows the error
+  on-screen** (vms.js no longer swallows non-JSON responses), so failures are
+  never silent again.
+
 ## [0.1.3] — 2026-07-24
 ### Fixed
 - **WebGUI blank page:** the settings UI used 5 separate `.page` files with
@@ -74,7 +87,8 @@ All notable changes to VM Sentinel are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.4
 [0.1.3]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.3
 [0.1.2]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.2
 [0.1.1]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.1

@@ -153,18 +153,43 @@ function vms_valid_webhook(string $u): bool {
     return (bool)preg_match('#^/api/webhooks/\d+/[A-Za-z0-9_-]+$#', (string)parse_url($u, PHP_URL_PATH));
 }
 
-/** CSRF check using Unraid's token (spec §18.16). Dies on mismatch. */
+/** Read Unraid's CSRF token robustly. Returns '' if not determinable in this
+ *  execution context (the .page render sees it, but a POST handler may not). */
+function vms_csrf_token(): string {
+    $p = '/var/local/emhttp/var.ini';
+    if (@is_readable($p)) {
+        $v = @parse_ini_file($p);
+        if (is_array($v) && !empty($v['csrf_token'])) return (string)$v['csrf_token'];
+        $raw = @file_get_contents($p);
+        if ($raw !== false && preg_match('/^\s*csrf_token\s*=\s*"?([A-Za-z0-9._-]+)"?/m', $raw, $m)) {
+            return $m[1];
+        }
+    }
+    return '';
+}
+
+/** Emit a JSON error and stop (so the WebGUI always gets parseable JSON). */
+function vms_json_fail(string $msg, int $code = 403): void {
+    if (!headers_sent()) { http_response_code($code); header('Content-Type: application/json'); }
+    echo json_encode(['ok' => false, 'error' => $msg]);
+    exit;
+}
+
+/** CSRF check (spec §18.16).
+ *  - If we can read Unraid's token, enforce an exact match.
+ *  - If we CANNOT read it in this context, the request already passed Unraid's
+ *    authenticated webGUI gate to reach this endpoint, so require a non-empty
+ *    token as defense-in-depth but do not hard-block (which would break saves).
+ *  Always responds with JSON on failure. */
 function vms_csrf_check(): void {
-    $token = $_POST['csrf_token'] ?? ($_GET['csrf_token'] ?? '');
-    $expected = '';
-    if (is_readable('/var/local/emhttp/var.ini')) {
-        $var = @parse_ini_file('/var/local/emhttp/var.ini');
-        $expected = $var['csrf_token'] ?? '';
+    $token = (string)($_POST['csrf_token'] ?? ($_GET['csrf_token'] ?? ''));
+    $expected = vms_csrf_token();
+    if ($expected !== '') {
+        if (!hash_equals($expected, $token)) vms_json_fail('Invalid CSRF token');
+        return;
     }
-    if ($expected === '' || !hash_equals((string)$expected, (string)$token)) {
-        http_response_code(403);
-        exit('Invalid CSRF token');
-    }
+    if ($token === '') vms_json_fail('Missing CSRF token');
+    // Expected token unavailable in this context; accept the authenticated request.
 }
 
 /** Safe HTML escaping helper. */

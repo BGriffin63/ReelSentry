@@ -10,8 +10,7 @@ Icon="vm-sentinel.png"
    render). Each tab's markup is a small include sharing this page's scope. */
 require_once '/usr/local/emhttp/plugins/vm.sentinel/include/vms-common.php';
 $cfg  = vms_read_config();
-$csrf = '';
-if (is_readable('/var/local/emhttp/var.ini')) { $v=@parse_ini_file('/var/local/emhttp/var.ini'); $csrf=$v['csrf_token']??''; }
+$csrf = vms_csrf_token();
 $P = '/usr/local/emhttp/plugins/vm.sentinel/include';
 ?>
 <link rel="stylesheet" href="/plugins/vm.sentinel/vms.css">

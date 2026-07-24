@@ -13,7 +13,13 @@
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: body.toString(),
       credentials: 'same-origin'
-    }).then(function (r) { return r.json(); });
+    }).then(function (r) {
+      // Never throw on non-JSON: surface the raw text so failures are visible.
+      return r.text().then(function (t) {
+        try { return JSON.parse(t); }
+        catch (e) { return { ok: false, error: (t ? t.slice(0, 140) : ('HTTP ' + r.status)) }; }
+      });
+    }).catch(function (e) { return { ok: false, error: 'Request failed: ' + e.message }; });
   }
 
   function flash(el, ok, msg) {
