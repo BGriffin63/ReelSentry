@@ -15,7 +15,7 @@
   <!ENTITY pkgName   "vm.sentinel-&version;-x86_64-1.txz">
   <!ENTITY packageURL "&gitURL;/releases/download/v&version;/&pkgName;">
   <!ENTITY pkgDir    "/boot/config/plugins/&name;">
-  <!ENTITY sha256    "REPLACE_WITH_TXZ_SHA256">
+  <!ENTITY sha256    "50703fe63bbe57a06d3541360827522c47466d5792ce711ccb8bc5aebaa725f4">
 ]>
 
 <PLUGIN name="&name;"
