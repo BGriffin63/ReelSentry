@@ -27,7 +27,7 @@ config_atomic_write() {
     if ! vms_lock_acquire "cfg.$(basename "$target")" 10; then
         vms_log_error config "timed out locking $target"; return 1
     fi
-    local tmp="${target}.tmp.$(vms_rand_token)"
+    local tmp; tmp="${target}.tmp.$(vms_rand_token)"
     if ! cat > "$tmp" 2>/dev/null; then
         rm -f "$tmp" 2>/dev/null; vms_lock_release "cfg.$(basename "$target")"; return 1
     fi

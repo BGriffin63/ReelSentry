@@ -51,7 +51,7 @@ history_rotate_if_needed() {
     local lines
     lines=$(wc -l < "$file" 2>/dev/null || echo 0)
     if [ "${lines:-0}" -gt "$max_count" ]; then
-        local tmp="${file}.rot.$(vms_rand_token)"
+        local tmp; tmp="${file}.rot.$(vms_rand_token)"
         tail -n "$max_count" "$file" > "$tmp" 2>/dev/null && mv -f "$tmp" "$file" 2>/dev/null
     fi
 

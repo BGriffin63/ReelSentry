@@ -51,7 +51,7 @@ inv_state_of() {
 inv_refresh_uuidmap() {
     virsh_available || return 0
     vms_mkrundirs || return 0
-    local tmp="${VMS_UUIDMAP}.tmp.$(vms_rand_token)" uuid name
+    local uuid name tmp; tmp="${VMS_UUIDMAP}.tmp.$(vms_rand_token)"
     : > "$tmp" 2>/dev/null || return 0
     while IFS= read -r uuid; do
         [ -n "$uuid" ] || continue

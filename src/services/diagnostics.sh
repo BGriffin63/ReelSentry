@@ -60,7 +60,7 @@ bundle() {
     { echo "plugin_version=$(version)"; echo "unraid_version=$(unraid_version)";
       echo "date=$(vms_now_iso)"; hook_status; _svc processor; _svc healthcheck; } > "$dir/env.txt"
 
-    local out="/tmp/vm-sentinel-diagnostics-$(date +%Y%m%d-%H%M%S).tar.gz"
+    local out; out="/tmp/vm-sentinel-diagnostics-$(date +%Y%m%d-%H%M%S).tar.gz"
     tar -C "$dir" -czf "$out" . 2>/dev/null
     rm -rf "$dir"
     echo "$out"

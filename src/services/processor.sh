@@ -25,6 +25,8 @@ process_one() {
     line=$(head -n1 "$file" 2>/dev/null)
     # Record shape: 1<TAB>ns<TAB>op<TAB>sub<TAB>name_b64<TAB>extra_b64
     local ver ns op sub name_b64 extra_b64
+    # extra_b64 absorbs the raw 'extra' hook arg; reserved for future use.
+    # shellcheck disable=SC2034
     IFS=$'\t' read -r ver ns op sub name_b64 extra_b64 <<<"$line"
     if [ "$ver" != "1" ] || [ -z "${op:-}" ]; then
         vms_log_warning queue "corrupt spool record; quarantining"
