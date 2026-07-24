@@ -24,8 +24,8 @@
         launch="&launch;"
         pluginURL="&pluginURL;"
         min="7.2.0"
-        icon="shield-halved"
-        support="YOUR_SUPPORT_THREAD_URL">
+        icon="shield-alt"
+        support="https://github.com/BGriffin63/unraid-vm-sentinel/issues">
 
   <CHANGES>
 ### 0.1.0 (alpha)

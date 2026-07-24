@@ -8,6 +8,18 @@ All notable changes to VM Sentinel are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.1.8] — 2026-07-24
+### Fixed
+- **Plugin logo/icon didn't show on the Installed Plugins page.** Unraid
+  auto-detects `/usr/local/emhttp/plugins/<name>/<name>.png`, but the icon was
+  named `vm-sentinel.png` (hyphen) while the plugin id is `vm.sentinel` (dot).
+  Added `vm.sentinel.png`; also changed the `.plg` Font Awesome fallback from the
+  FA6 name `shield-halved` (unsupported by Unraid's FA set, rendered blank) to
+  `shield-alt`.
+### Changed
+- Set the plugin **Support** link to the GitHub Issues page so the "Support
+  Thread" link on the Plugins page works (swap for an Unraid forum thread later).
+
 ## [0.1.7] — 2026-07-24
 ### Fixed
 - **Lifecycle events were captured but never notified** ("Notified: —" for every
@@ -124,7 +136,8 @@ All notable changes to VM Sentinel are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.7...HEAD
+[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.8...HEAD
+[0.1.8]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.8
 [0.1.7]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.7
 [0.1.6]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.6
 [0.1.5]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.5

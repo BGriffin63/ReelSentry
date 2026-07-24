@@ -6,7 +6,7 @@
    support bundle (secrets are redacted — safe to share).
 3. Search existing GitHub issues.
 4. Open a new issue using the appropriate template, or post in the community
-   support thread: `YOUR_SUPPORT_THREAD_URL`.
+   support thread: `https://github.com/BGriffin63/unraid-vm-sentinel/issues`.
 
 ## What to include
 - Unraid version and VM Sentinel version (Diagnostics tab).

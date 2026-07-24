@@ -19,7 +19,7 @@
   </Branch>
   <PluginURL>https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/vm.sentinel.plg</PluginURL>
   <Project>https://github.com/BGriffin63/unraid-vm-sentinel</Project>
-  <Support>YOUR_SUPPORT_THREAD_URL</Support>
+  <Support>https://github.com/BGriffin63/unraid-vm-sentinel/issues</Support>
   <Category>Tools: Utilities Status:Beta</Category>
   <Icon>https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/assets/vm-sentinel-128.png</Icon>
   <Screenshot>https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/docs/screenshots/overview.png</Screenshot>

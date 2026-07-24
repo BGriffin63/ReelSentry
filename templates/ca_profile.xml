@@ -11,7 +11,7 @@
   <Author>BGriffin63</Author>
   <GitHub>BGriffin63</GitHub>
   <Repository>https://github.com/BGriffin63/unraid-vm-sentinel</Repository>
-  <Support>YOUR_SUPPORT_THREAD_URL</Support>
+  <Support>https://github.com/BGriffin63/unraid-vm-sentinel/issues</Support>
   <Project>https://github.com/BGriffin63/unraid-vm-sentinel</Project>
   <Language>en_US</Language>
   <PluginRepository>true</PluginRepository>
