@@ -3,43 +3,59 @@ on:
   push:
     tags: ['v*']
 permissions:
-  contents: write   # needed to create the release + upload assets
+  contents: write   # create the release, upload assets, and commit the stamped .plg
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Check out the main branch (not the detached tag) so we can commit the
+      # stamped .plg back to it. The tag == main HEAD at tag time.
       - uses: actions/checkout@v4
-      - name: Build package + checksum + stamped plg
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Build package, checksum, and stamp the .plg
         run: |
           python3 scripts/generate-icons.py
           bash scripts/build.sh
           bash scripts/package.sh
           bash scripts/validate.sh
           bash scripts/release.sh
+          # Promote the stamped manifest to the repo root so installs from main
+          # carry the correct version and SHA256.
+          cp build/vm.sentinel.plg vm.sentinel.plg
+
       - name: Generate SBOM (best effort)
         run: |
           {
             echo "# VM Sentinel SBOM"
             echo "version: $(cat VERSION)"
-            echo "runtime-deps: bash, coreutils, curl, libvirt/virsh, php, unraid notify (all provided by Unraid)"
+            echo "runtime-deps: bash, coreutils, curl, libvirt/virsh, php, unraid notify (provided by Unraid)"
             echo "bundled-third-party: none"
           } > build/SBOM.txt
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: vm-sentinel-release
-          path: |
-            build/*.txz
-            build/*.sha256
-            build/vm.sentinel.plg
-            build/SBOM.txt
-      - name: Create GitHub Release
+
+      - name: Commit stamped .plg back to main
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- vm.sentinel.plg; then
+            git add vm.sentinel.plg
+            git commit -m "release: stamp vm.sentinel.plg for ${GITHUB_REF_NAME} [skip ci]"
+            git push origin HEAD:main
+          else
+            echo "vm.sentinel.plg already up to date."
+          fi
+
+      - name: Create GitHub Release with verified assets
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body_path: build/SBOM.txt
           files: |
             build/*.txz
             build/*.sha256
             build/SBOM.txt
-          body_path: build/SBOM.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

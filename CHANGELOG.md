@@ -8,9 +8,10 @@ All notable changes to VM Sentinel are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve `docs/RESEARCH.md` §7 hardware-verification items.
 
-## [0.1.0-alpha] — 2026-07-23
+## [0.1.0] — 2026-07-23 (alpha status)
 ### Added
-- Initial public **alpha**.
+- Initial public **alpha** (release version `0.1.0`; alpha status noted here and
+  via the Community Applications Beta flag).
 - VM lifecycle monitoring via a namespaced libvirt `qemu.d/50-vm-sentinel` hook
   that coexists with other plugins and never blocks VM operations (fail-open).
 - Spool + single-flight processor architecture (runtime in tmpfs).
@@ -32,5 +33,5 @@ All notable changes to VM Sentinel are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.0-alpha...HEAD
-[0.1.0-alpha]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.0-alpha
+[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.0
