@@ -156,7 +156,7 @@ Start with **Settings → VM Sentinel → Diagnostics** and
 ## Support
 
 - Issues: GitHub Issues on this repository.
-- Community thread: `YOUR_SUPPORT_THREAD_URL`.
+- Community thread: `Will Create Later`.
 - Security reports: see [`.github/SECURITY.md`](.github/SECURITY.md).
 
 ## Contributing
