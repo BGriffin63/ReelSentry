@@ -8,14 +8,14 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "vm.sentinel">
   <!ENTITY author    "BGriffin63">
-  <!ENTITY version   "0.1.4">
+  <!ENTITY version   "0.1.5">
   <!ENTITY launch    "Settings/VMSentinel">
   <!ENTITY pluginURL "https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/vm.sentinel.plg">
   <!ENTITY gitURL    "https://github.com/BGriffin63/unraid-vm-sentinel">
   <!ENTITY pkgName   "vm.sentinel-&version;-x86_64-1.txz">
   <!ENTITY packageURL "&gitURL;/releases/download/v&version;/&pkgName;">
   <!ENTITY pkgDir    "/boot/config/plugins/&name;">
-  <!ENTITY sha256    "81da73106b9b2aedbc13ccf33a8d76f3db4423dc0c045d94f7e34784b35e472f">
+  <!ENTITY sha256    "ef6b347c068879280a29af76e7d544858c1ed6cb33353646d36b2920b4ffff55">
 ]>
 
 <PLUGIN name="&name;"
