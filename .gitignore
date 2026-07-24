@@ -1,0 +1,23 @@
+# Build artifacts
+/build/*
+!/build/.gitkeep
+*.txz
+*.tgz
+*.tar.gz
+*.sha256
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Local test scratch
+/tests/.tmp/
+/.coverage/
+*.log
+
+# Local Claude Code state
+.claude/

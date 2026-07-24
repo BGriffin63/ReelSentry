@@ -1,0 +1,65 @@
+Menu="VMSentinel"
+Title="Notifications"
+---
+<?php
+/* VM Sentinel — Notification settings (spec §10, §11, §13.3, §16).
+   SPDX-License-Identifier: MIT
+   Secrets are NEVER echoed: only a redacted webhook representation is shown. */
+require_once '/usr/local/emhttp/plugins/vm.sentinel/include/vms-common.php';
+$cfg = vms_read_config();
+$webhookRedacted = vms_redact_webhook(vms_read_secret_webhook());
+$csrf=''; if (is_readable('/var/local/emhttp/var.ini')){$v=@parse_ini_file('/var/local/emhttp/var.ini');$csrf=$v['csrf_token']??'';}
+$c = function($k,$d=0) use ($cfg){ return (int)($cfg[$k] ?? $d) ? 'checked':''; };
+?>
+<link rel="stylesheet" href="/plugins/vm.sentinel/vms.css">
+<script>window.VMS_CSRF=<?=json_encode($csrf)?>;</script>
+<script src="/plugins/vm.sentinel/vms.js"></script>
+<div class="vms-wrap">
+  <?php include __DIR__.'/include/nav.php'; vms_nav('notify'); ?>
+
+  <form onsubmit="event.preventDefault();VMS.saveForm(this,this.querySelector('.vms-flash'));">
+    <input type="hidden" name="action" value="save_global">
+    <h3>Monitoring</h3>
+    <label><input type="checkbox" name="monitoring_enabled" value="1" <?=$c('monitoring_enabled')?>> Enable monitoring</label>
+    <p class="vms-help">Master switch. When off, no notifications are sent regardless of per-VM settings.</p>
+
+    <h3>Native Unraid notifications</h3>
+    <label><input type="checkbox" name="native_enabled" value="1" <?=$c('native_enabled',1)?>> Send through Unraid’s built-in notifications</label>
+    <p class="vms-help">Uses whatever agents you configured under Settings → Notifications (email, Discord/Telegram/Pushover agents, browser).</p>
+    <button type="button" onclick="VMS.testNotify('native',document.getElementById('nflash'))">Send test notification</button>
+    <span id="nflash" class="vms-flash"></span>
+
+    <h3>Discord webhook</h3>
+    <label><input type="checkbox" name="discord_enabled" value="1" <?=$c('discord_enabled')?>> Enable Discord webhook alerts</label>
+    <label>Display name override: <input type="text" name="discord_username" value="<?=h($cfg['discord_username']??'VM Sentinel')?>"></label>
+    <label>Avatar URL (https): <input type="text" name="discord_avatar" value="<?=h($cfg['discord_avatar']??'')?>"></label>
+    <label>Mention role ID: <input type="text" name="discord_mention_role" value="<?=h($cfg['discord_mention_role']??'')?>"></label>
+    <label>Mention user ID: <input type="text" name="discord_mention_user" value="<?=h($cfg['discord_mention_user']??'')?>"></label>
+
+    <h3>Quiet hours</h3>
+    <label><input type="checkbox" name="quiet_enabled" value="1" <?=$c('quiet_enabled')?>> Enable quiet hours</label>
+    <label>Start <input type="time" name="quiet_start" value="<?=h($cfg['quiet_start']??'22:00')?>"></label>
+    <label>End <input type="time" name="quiet_end" value="<?=h($cfg['quiet_end']??'07:00')?>"></label>
+    <label>Days (0=Sun) <input type="text" name="quiet_days" value="<?=h($cfg['quiet_days']??'0,1,2,3,4,5,6')?>"></label>
+    <label><input type="checkbox" name="quiet_bypass_critical" value="1" <?=$c('quiet_bypass_critical',1)?>> Critical alerts still bypass quiet hours</label>
+
+    <h3>Retention</h3>
+    <label>Max events <input type="number" name="history_max_events" min="100" value="<?=h((string)($cfg['history_max_events']??5000))?>"></label>
+    <label>Retention days <input type="number" name="history_retention_days" min="1" value="<?=h((string)($cfg['history_retention_days']??30))?>"></label>
+    <label>Global cooldown (s) <input type="number" name="cooldown_seconds" min="0" value="<?=h((string)($cfg['cooldown_seconds']??0))?>"></label>
+
+    <p><button type="submit">Save settings</button> <span class="vms-flash"></span></p>
+  </form>
+
+  <hr>
+  <h3>Discord webhook URL</h3>
+  <p class="vms-help">Stored in a private file with restricted permissions. Only a redacted form is ever shown.
+     Treat the URL like a password — see <a href="https://github.com/BGriffin63/unraid-vm-sentinel/blob/main/docs/DISCORD-SETUP.md">Discord setup</a>.</p>
+  <p>Current: <code><?=h($webhookRedacted)?></code></p>
+  <form onsubmit="event.preventDefault();VMS.post({action:'save_webhook',discord_webhook:this.discord_webhook.value}).then(r=>{VMS.flash(document.getElementById('wflash'),r.ok,r.error||('Saved: '+(r.display||'')));if(r.ok)this.reset();});">
+    <input type="password" name="discord_webhook" placeholder="https://discord.com/api/webhooks/…" style="width:420px" autocomplete="off">
+    <button type="submit">Save webhook</button>
+    <button type="button" onclick="VMS.testNotify('discord',document.getElementById('wflash'))">Send test</button>
+    <span id="wflash" class="vms-flash"></span>
+  </form>
+</div>

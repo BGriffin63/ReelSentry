@@ -1,0 +1,49 @@
+name: Bug report
+description: Report a problem with VM Sentinel
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report! Please attach the **sanitized** diagnostics bundle
+        (Settings → VM Sentinel → Diagnostics → Download). It redacts secrets.
+        Do **not** paste your Discord webhook URL.
+  - type: input
+    id: vms_version
+    attributes:
+      label: VM Sentinel version
+      placeholder: e.g. 0.1.0-alpha
+    validations:
+      required: true
+  - type: input
+    id: unraid_version
+    attributes:
+      label: Unraid version
+      placeholder: e.g. 7.2.0
+    validations:
+      required: true
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened?
+      description: What did you expect, and what actually occurred?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+  - type: textarea
+    id: history
+    attributes:
+      label: Relevant Event History rows
+      description: VM, event type, classification, timestamp (no secrets).
+  - type: checkboxes
+    id: confirms
+    attributes:
+      label: Confirmations
+      options:
+        - label: I attached the sanitized diagnostics bundle (or explained why not).
+          required: true
+        - label: I did not include any secret (webhook URL, tokens).
+          required: true

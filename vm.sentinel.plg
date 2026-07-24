@@ -1,0 +1,106 @@
+<?xml version='1.0' standalone='yes'?>
+<!--
+  VM Sentinel — Unraid plugin manifest (spec §20, §22).
+  SPDX-License-Identifier: MIT
+  Placeholders (BGriffin63, &version;, &sha256;) are filled by
+  scripts/release.sh at release time. See docs/MAINTAINER-CHECKLIST.md.
+-->
+<!DOCTYPE PLUGIN [
+  <!ENTITY name      "vm.sentinel">
+  <!ENTITY author    "BGriffin63">
+  <!ENTITY version   "0.1.0">
+  <!ENTITY launch    "Settings/VMSentinel">
+  <!ENTITY pluginURL "https://raw.githubusercontent.com/BGriffin63/unraid-vm-sentinel/main/vm.sentinel.plg">
+  <!ENTITY gitURL    "https://github.com/BGriffin63/unraid-vm-sentinel">
+  <!ENTITY pkgName   "vm.sentinel-&version;-x86_64-1.txz">
+  <!ENTITY packageURL "&gitURL;/releases/download/v&version;/&pkgName;">
+  <!ENTITY pkgDir    "/boot/config/plugins/&name;">
+  <!ENTITY sha256    "REPLACE_WITH_TXZ_SHA256">
+]>
+
+<PLUGIN name="&name;"
+        author="&author;"
+        version="&version;"
+        launch="&launch;"
+        pluginURL="&pluginURL;"
+        min="7.2.0"
+        icon="shield-halved"
+        support="YOUR_SUPPORT_THREAD_URL">
+
+  <CHANGES>
+### 0.1.0 (alpha)
+- Initial public alpha of VM Sentinel.
+- VM lifecycle monitoring via a namespaced libvirt qemu.d hook (coexists with other plugins).
+- Native Unraid notifications + optional Discord webhook (no bot).
+- Optional agentless health checks (ICMP / TCP / QEMU guest agent).
+- Event history, quiet hours, maintenance suppression, diagnostics bundle.
+- **Beta caveat:** requires validation on real Unraid 7.2 hardware; see docs/TESTING.md.
+  </CHANGES>
+
+  <!-- Minimum-version guard (belt-and-suspenders alongside the min= attribute). -->
+  <FILE Run="/bin/bash">
+    <INLINE>
+      unraid_ver=$(sed -n 's/^version="\?\([0-9.]*\)"\?.*/\1/p' /etc/unraid-version 2>/dev/null | head -n1)
+      req="7.2.0"
+      lowest=$(printf '%s\n%s\n' "$unraid_ver" "$req" | sort -V | head -n1)
+      if [ "$unraid_ver" != "" ] &amp;&amp; [ "$lowest" != "$req" ] &amp;&amp; [ "$unraid_ver" != "$req" ]; then
+        echo "**********************************************************"
+        echo " VM Sentinel requires Unraid 7.2.0 or newer (found $unraid_ver)."
+        echo " Installation aborted."
+        echo "**********************************************************"
+        exit 1
+      fi
+    </INLINE>
+  </FILE>
+
+  <!-- Download the versioned package with a verified checksum. -->
+  <FILE Name="&pkgDir;/&pkgName;">
+    <URL>&packageURL;</URL>
+    <SHA256>&sha256;</SHA256>
+  </FILE>
+
+  <!-- Install / upgrade: preserve config, install package, install hook, start service. -->
+  <FILE Run="/bin/bash">
+    <INLINE>
+      mkdir -p "&pkgDir;"
+      # upgradepkg --install-new is idempotent and preserves an existing install.
+      upgradepkg --install-new "&pkgDir;/&pkgName;" || installpkg "&pkgDir;/&pkgName;"
+
+      PLUGIN_ROOT="/usr/local/emhttp/plugins/&name;"
+      # Migrate config if needed, install the libvirt hook idempotently, start services.
+      [ -x "$PLUGIN_ROOT/services/vm-sentinel-service" ] &amp;&amp; \
+        bash "$PLUGIN_ROOT/services/vm-sentinel-service" start || true
+
+      echo ""
+      echo "VM Sentinel &version; installed."
+      echo "Open Settings → VM Sentinel to choose which VMs to monitor."
+      echo "NOTE: this is an ALPHA build; validate on a test system first."
+    </INLINE>
+  </FILE>
+
+  <!-- Auto-start on array start (self-healing hook repair). -->
+  <FILE Name="/usr/local/emhttp/plugins/&name;/event/started" Mode="0755">
+    <INLINE>#!/bin/bash
+      bash /usr/local/emhttp/plugins/&name;/services/vm-sentinel-service start &amp;>/dev/null &amp;
+    </INLINE>
+  </FILE>
+
+  <!-- Removal: surgical + idempotent (spec §20, §35). -->
+  <FILE Run="/bin/bash" Method="remove">
+    <INLINE>
+      PLUGIN_ROOT="/usr/local/emhttp/plugins/&name;"
+      # Stop services and remove ONLY our libvirt hook.
+      [ -x "$PLUGIN_ROOT/services/vm-sentinel-service" ] &amp;&amp; bash "$PLUGIN_ROOT/services/vm-sentinel-service" stop || true
+      [ -x "$PLUGIN_ROOT/hooks/install-hook.sh" ] &amp;&amp; bash "$PLUGIN_ROOT/hooks/install-hook.sh" uninstall || true
+      # Remove runtime (tmpfs) state.
+      rm -rf /var/run/&name; 2>/dev/null || true
+      # Remove installed package files.
+      removepkg "&name;" 2>/dev/null || true
+      rm -rf "$PLUGIN_ROOT" 2>/dev/null || true
+      # Leave /boot/config/plugins/&name; (user config + history) by default; see
+      # docs — a full purge is a documented manual step.
+      echo "VM Sentinel removed. Your configuration was preserved at &pkgDir;."
+      echo "To fully remove it: rm -rf &pkgDir;"
+    </INLINE>
+  </FILE>
+</PLUGIN>

@@ -1,0 +1,29 @@
+name: security
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: gitleaks (secret detection)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Repository secret sanity check
+        run: bash scripts/validate.sh || true
+  codeql-note:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Security tests (injection / webhook)
+        run: bash tests/security/test_injection.sh && bash tests/security/test_webhook_discord.sh
+      # NOTE (maintainer): CodeQL supports the JS in the WebGUI; shell/PHP here are
+      # covered by ShellCheck + php -l + the security test suite. Enable CodeQL for
+      # 'javascript' if desired.

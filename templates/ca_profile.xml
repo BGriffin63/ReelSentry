@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  VM Sentinel — Community Applications maintainer/repository profile (spec §22).
+  SPDX-License-Identifier: MIT
+
+  A profile describes the maintainer and repository so Community Applications can
+  attribute and group entries. [VERIFY] the exact profile schema currently
+  accepted by CA before submission; replace all YOUR_* placeholders.
+-->
+<Profile>
+  <Author>BGriffin63</Author>
+  <GitHub>BGriffin63</GitHub>
+  <Repository>https://github.com/BGriffin63/unraid-vm-sentinel</Repository>
+  <Support>YOUR_SUPPORT_THREAD_URL</Support>
+  <Project>https://github.com/BGriffin63/unraid-vm-sentinel</Project>
+  <Language>en_US</Language>
+  <PluginRepository>true</PluginRepository>
+  <Plugins>
+    <Plugin>vm-sentinel.xml</Plugin>
+  </Plugins>
+</Profile>

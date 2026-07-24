@@ -1,0 +1,45 @@
+name: build-release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write   # needed to create the release + upload assets
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build package + checksum + stamped plg
+        run: |
+          python3 scripts/generate-icons.py
+          bash scripts/build.sh
+          bash scripts/package.sh
+          bash scripts/validate.sh
+          bash scripts/release.sh
+      - name: Generate SBOM (best effort)
+        run: |
+          {
+            echo "# VM Sentinel SBOM"
+            echo "version: $(cat VERSION)"
+            echo "runtime-deps: bash, coreutils, curl, libvirt/virsh, php, unraid notify (all provided by Unraid)"
+            echo "bundled-third-party: none"
+          } > build/SBOM.txt
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm-sentinel-release
+          path: |
+            build/*.txz
+            build/*.sha256
+            build/vm.sentinel.plg
+            build/SBOM.txt
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            build/*.txz
+            build/*.sha256
+            build/SBOM.txt
+          body_path: build/SBOM.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

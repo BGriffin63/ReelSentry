@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# VM Sentinel — libvirt qemu.d hook (spec §6). INSTALLED AS:
+#     /etc/libvirt/hooks/qemu.d/50-vm-sentinel
+# SPDX-License-Identifier: MIT
+#
+# libvirt calls:  <this> <vm-name> <operation> <sub-operation> <extra>
+#
+# CRITICAL CONTRACT (fail-open, spec §1, §6):
+#   * This script is on the VM's lifecycle critical path.
+#   * It MUST return 0 quickly and MUST NOT do network/DNS/notification work.
+#   * Any internal failure must still exit 0 so the VM operation is unaffected.
+#   * VM name / argv are UNTRUSTED and are never evaluated as shell.
+
+# Guarantee exit 0 no matter what happens below.
+trap 'exit 0' EXIT
+set -u
+
+# Resolve our lib dir relative to the real plugin install (overridable for tests).
+VMS_LIBDIR="${VMS_LIBDIR:-/usr/local/emhttp/plugins/vm.sentinel/lib}"
+
+# Source libraries defensively; if anything is missing, exit 0 (no monitoring).
+# shellcheck source=/dev/null
+{ . "${VMS_LIBDIR}/common.sh" && . "${VMS_LIBDIR}/validate.sh" \
+  && . "${VMS_LIBDIR}/queue.sh"; } 2>/dev/null || exit 0
+
+# Positional args from libvirt.
+vm_name_raw=${1-}
+op=${2-}
+sub=${3-}
+extra=${4-}
+
+# Bound work: ignore obviously irrelevant phases early to avoid spool churn.
+# We still record the useful ones; 'prepare'/'reconnect' are low value + noisy.
+case "${op}" in
+    prepare|reconnect) exit 0 ;;
+esac
+
+# Sanitize the name into a single, bounded, control-char-free field. It is NEVER
+# used as a shell token — spool_write base64-encodes it.
+vm_name=$(sanitize_vm_name "$vm_name_raw")
+
+# Write one compact spool record to tmpfs and return immediately. No network.
+spool_write "$op" "$sub" "$vm_name" "$extra" 2>/dev/null || exit 0
+
+# Best-effort, non-blocking nudge so the processor drains promptly. This only
+# touches a tmpfs file; the processor also runs on a timer so a lost nudge is
+# harmless (at-least-once).
+: > "${VMS_RUN_DIR}/trigger" 2>/dev/null || true
+
+exit 0

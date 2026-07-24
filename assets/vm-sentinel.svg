@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="VM Sentinel">
+  <title>VM Sentinel</title>
+  <!-- Original mark: shield (protection) + VM window (virtualization) + pulse (active monitoring).
+       Hand-authored, no external assets, no gradients required, legible at 48px. -->
+  <defs>
+    <clipPath id="shield">
+      <path d="M64 8 L112 24 L112 62 C112 92 92 112 64 120 C36 112 16 92 16 62 L16 24 Z"/>
+    </clipPath>
+  </defs>
+  <!-- Shield body -->
+  <path d="M64 8 L112 24 L112 62 C112 92 92 112 64 120 C36 112 16 92 16 62 L16 24 Z"
+        fill="#1f6feb" stroke="#0b2a5b" stroke-width="4" stroke-linejoin="round"/>
+  <!-- VM window -->
+  <g clip-path="url(#shield)">
+    <rect x="38" y="40" width="52" height="40" rx="4" fill="#0b2a5b"/>
+    <rect x="38" y="40" width="52" height="10" rx="4" fill="#0a2148"/>
+    <circle cx="45" cy="45" r="2" fill="#5fb0ff"/>
+    <circle cx="52" cy="45" r="2" fill="#5fb0ff"/>
+    <!-- Pulse / heartbeat line -->
+    <path d="M40 66 H54 L58 56 L64 76 L70 62 L74 66 H88" fill="none"
+          stroke="#7ee787" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- Active status dot -->
+  <circle cx="96" cy="34" r="9" fill="#2ea043" stroke="#ffffff" stroke-width="3"/>
+</svg>

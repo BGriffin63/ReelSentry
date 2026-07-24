@@ -1,0 +1,24 @@
+# VM Sentinel runs on Linux/Unraid. Force LF on all text so shell scripts, the
+# libvirt hook, PHP .page files, and the .plg never get CRLF (which would break
+# `#!/usr/bin/env bash` with `bad interpreter: ...^M`).
+* text=auto eol=lf
+
+# Explicit LF for executable/interpreted files (no extension ones too).
+*.sh        text eol=lf
+*.page      text eol=lf
+*.php       text eol=lf
+*.plg       text eol=lf
+*.xml       text eol=lf
+*.yml       text eol=lf
+*.js        text eol=lf
+*.css       text eol=lf
+*.py        text eol=lf
+*.svg       text eol=lf
+vm-sentinel-hook      text eol=lf
+vm-sentinel-service   text eol=lf
+
+# Binary assets — never touch line endings.
+*.png binary
+*.txz binary
+*.tgz binary
+*.gz  binary

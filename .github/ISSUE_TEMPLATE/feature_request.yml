@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest an idea for VM Sentinel
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Fits the project constraints
+      description: VM Sentinel stays safe and simple.
+      options:
+        - label: Does not require a Discord bot, a daemon, inbound ports, or bundled binaries.
+        - label: Does not put network calls on the VM lifecycle critical path.

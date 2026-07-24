@@ -1,0 +1,16 @@
+name: lint
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  shell-php-xml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install linters
+        run: sudo apt-get update && sudo apt-get install -y shellcheck php-cli libxml2-utils
+      - name: ShellCheck + PHP lint + XML validation
+        run: bash scripts/lint.sh

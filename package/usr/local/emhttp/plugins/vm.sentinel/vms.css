@@ -1,0 +1,23 @@
+/* VM Sentinel WebGUI styling — intentionally light; inherits Unraid theme.
+   SPDX-License-Identifier: MIT */
+.vms-wrap { max-width: 1100px; }
+.vms-cards { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 18px; }
+.vms-card { flex: 1 1 160px; border: 1px solid rgba(128,128,128,.3); border-radius: 8px; padding: 12px 14px; }
+.vms-card .n { font-size: 1.6em; font-weight: 600; line-height: 1.1; }
+.vms-card .l { font-size: .85em; opacity: .75; }
+.vms-badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: .8em; }
+.vms-ok    { background: rgba(46,204,113,.18); }
+.vms-warn  { background: rgba(243,156,18,.18); }
+.vms-crit  { background: rgba(231,76,60,.20); }
+.vms-muted { opacity: .6; }
+.vms-flash { display: none; padding: 3px 10px; border-radius: 6px; margin-left: 10px; font-size: .9em; }
+.vms-flash.vms-ok  { background: rgba(46,204,113,.2); }
+.vms-flash.vms-err { background: rgba(231,76,60,.25); }
+.vms-vm { border: 1px solid rgba(128,128,128,.25); border-radius: 8px; margin: 8px 0; }
+.vms-vm > summary { cursor: pointer; padding: 10px 12px; font-weight: 600; }
+.vms-vm .body { padding: 4px 14px 14px; }
+.vms-uuid { font-family: monospace; font-size: .8em; opacity: .6; }
+table.vms-tbl { width: 100%; border-collapse: collapse; }
+table.vms-tbl th, table.vms-tbl td { text-align: left; padding: 6px 8px; border-bottom: 1px solid rgba(128,128,128,.2); font-size: .9em; }
+.vms-nonaffiliation { font-size: .8em; opacity: .6; margin-top: 24px; }
+.vms-help { font-size: .85em; opacity: .7; margin: 2px 0 8px; }

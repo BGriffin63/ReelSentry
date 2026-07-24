@@ -1,0 +1,26 @@
+name: Support request
+description: Get help configuring or using VM Sentinel
+labels: [support]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check [TROUBLESHOOTING.md](../../docs/TROUBLESHOOTING.md) first.
+        Attach the **sanitized** diagnostics bundle; never paste secrets.
+  - type: textarea
+    id: question
+    attributes:
+      label: What do you need help with?
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: VM Sentinel + Unraid versions
+  - type: checkboxes
+    id: confirms
+    attributes:
+      label: Confirmations
+      options:
+        - label: I did not include any secret (webhook URL, tokens).
+          required: true

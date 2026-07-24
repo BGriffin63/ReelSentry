@@ -1,0 +1,49 @@
+Menu="VMSentinel"
+Title="Event History"
+---
+<?php
+/* VM Sentinel — Event history (spec §13.4). SPDX-License-Identifier: MIT
+   History is already secret-free; we redact again defensively when reading. */
+require_once '/usr/local/emhttp/plugins/vm.sentinel/include/vms-common.php';
+$csrf=''; if (is_readable('/var/local/emhttp/var.ini')){$v=@parse_ini_file('/var/local/emhttp/var.ini');$csrf=$v['csrf_token']??'';}
+$rows = [];
+$raw = vms_run('services/history-tool.sh', ['tail','500']);
+foreach (array_filter(explode("\n", $raw)) as $line) { $o = json_decode($line, true); if (is_array($o)) $rows[] = $o; }
+$rows = array_reverse($rows);
+function sev_badge($s){ return $s==='critical'?'vms-crit':($s==='warning'?'vms-warn':'vms-ok'); }
+?>
+<link rel="stylesheet" href="/plugins/vm.sentinel/vms.css">
+<script>window.VMS_CSRF=<?=json_encode($csrf)?>;</script>
+<script src="/plugins/vm.sentinel/vms.js"></script>
+<div class="vms-wrap">
+  <?php include __DIR__.'/include/nav.php'; vms_nav('history'); ?>
+  <p>
+    <input id="flt" type="text" placeholder="Filter (VM, event, classification…)" oninput="vmsFilter()" style="width:280px">
+    <a href="/plugins/vm.sentinel/include/export.php?fmt=csv" class="button">Export CSV</a>
+    <a href="/plugins/vm.sentinel/include/export.php?fmt=json" class="button">Export JSON</a>
+    <button type="button" onclick="if(confirm('Clear all event history?'))VMS.post({action:'clear_history'}).then(()=>location.reload())">Clear history</button>
+  </p>
+  <table class="vms-tbl" id="tbl">
+    <thead><tr><th>Time</th><th>VM</th><th>Event</th><th>Classification</th><th>State</th><th>Severity</th><th>Notified</th></tr></thead>
+    <tbody>
+    <?php if (!$rows): ?>
+      <tr><td colspan="7" class="vms-muted">No events recorded yet.</td></tr>
+    <?php else: foreach ($rows as $r): ?>
+      <tr>
+        <td><?=h($r['timestamp']??'')?></td>
+        <td><?=h($r['vm_name']??'')?></td>
+        <td><?=h($r['event_type']??'')?></td>
+        <td><?=h($r['classification']??'')?></td>
+        <td><?=h(($r['previous_state']??'?').' → '.($r['current_state']??'?'))?></td>
+        <td><span class="vms-badge <?=sev_badge($r['severity']??'')?>"><?=h($r['severity']??'')?></span></td>
+        <td><?=!empty($r['notify_attempted'])?'yes':'—'?></td>
+      </tr>
+    <?php endforeach; endif; ?>
+    </tbody>
+  </table>
+</div>
+<script>
+function vmsFilter(){var q=document.getElementById('flt').value.toLowerCase();
+  document.querySelectorAll('#tbl tbody tr').forEach(function(tr){
+    tr.style.display = tr.textContent.toLowerCase().indexOf(q)>=0?'':'none';});}
+</script>
