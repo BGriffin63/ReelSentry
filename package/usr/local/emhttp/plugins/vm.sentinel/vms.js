@@ -48,6 +48,7 @@
     testNotify: function (target, statusEl) {
       flash(statusEl, true, 'Sending test…');
       return post({ action: 'test_notify', target: target }).then(function (res) {
+        if (res && res.error) { flash(statusEl, false, res.error); return res; }
         var r = (res.result && res.result.results) || [];
         var parts = r.map(function (x) { return x.provider + ': ' + (x.ok ? 'ok' : ('failed' + (x.code ? ' (' + x.code + ')' : ''))); });
         flash(statusEl, r.every(function (x) { return x.ok; }), parts.join('  •  ') || 'No providers enabled.');

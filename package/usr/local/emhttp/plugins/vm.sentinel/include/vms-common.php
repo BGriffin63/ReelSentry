@@ -175,21 +175,35 @@ function vms_json_fail(string $msg, int $code = 403): void {
     exit;
 }
 
-/** CSRF check (spec §18.16).
- *  - If we can read Unraid's token, enforce an exact match.
- *  - If we CANNOT read it in this context, the request already passed Unraid's
- *    authenticated webGUI gate to reach this endpoint, so require a non-empty
- *    token as defense-in-depth but do not hard-block (which would break saves).
+/** Is this request same-origin? Uses Origin/Referer, which a browser sets and a
+ *  cross-site attacker cannot forge. A recognized CSRF defense (OWASP). */
+function vms_same_origin(): bool {
+    $host = strtolower((string)($_SERVER['HTTP_HOST'] ?? ''));
+    if ($host === '') return false;
+    foreach (['HTTP_ORIGIN', 'HTTP_REFERER'] as $h) {
+        $v = $_SERVER[$h] ?? '';
+        if ($v === '') continue;
+        $vh = strtolower((string)parse_url($v, PHP_URL_HOST));
+        $port = parse_url($v, PHP_URL_PORT);
+        if ($port) $vh .= ':' . $port;
+        // Compare against host (with and without port).
+        if ($vh === $host || $vh === explode(':', $host)[0]) return true;
+    }
+    return false;
+}
+
+/** CSRF check (spec §18.16). Two independent gates; either one passing is safe:
+ *  1) Exact match of Unraid's csrf_token (best), OR
+ *  2) The request is same-origin (Origin/Referer host == this host).
+ *  Unraid's volatile var.ini can make (1) race, so (2) is the reliable fallback.
+ *  Both are moot without Unraid's authenticated session, which gates the webGUI.
  *  Always responds with JSON on failure. */
 function vms_csrf_check(): void {
     $token = (string)($_POST['csrf_token'] ?? ($_GET['csrf_token'] ?? ''));
     $expected = vms_csrf_token();
-    if ($expected !== '') {
-        if (!hash_equals($expected, $token)) vms_json_fail('Invalid CSRF token');
-        return;
-    }
-    if ($token === '') vms_json_fail('Missing CSRF token');
-    // Expected token unavailable in this context; accept the authenticated request.
+    if ($expected !== '' && hash_equals($expected, $token)) return; // token valid
+    if (vms_same_origin()) return;                                  // same-origin
+    vms_json_fail('CSRF check failed (cross-origin request refused)');
 }
 
 /** Safe HTML escaping helper. */

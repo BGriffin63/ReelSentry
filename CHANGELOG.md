@@ -8,6 +8,19 @@ All notable changes to VM Sentinel are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.1.5] — 2026-07-24
+### Fixed
+- **Saves/tests still rejected with "Invalid CSRF token"** even after 0.1.4:
+  Unraid rewrites `/var/local/emhttp/var.ini` frequently, so the `csrf_token`
+  the page embedded no longer matched the value `save.php` read a moment later
+  (a race, not staleness — a hard refresh did not help). The CSRF check now
+  passes if *either* the token matches *or* the request is same-origin
+  (`Origin`/`Referer` host == server host, which a cross-site attacker cannot
+  forge) — a standard CSRF defense that is immune to the token race and still
+  backed by Unraid's authenticated session.
+- Test buttons now surface the real error instead of mislabeling a rejected
+  request as "No providers enabled".
+
 ## [0.1.4] — 2026-07-24
 ### Fixed
 - **Settings/webhook wouldn't save; test buttons did nothing.** The POST handler
@@ -87,7 +100,8 @@ All notable changes to VM Sentinel are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.5
 [0.1.4]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.4
 [0.1.3]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.3
 [0.1.2]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.2
