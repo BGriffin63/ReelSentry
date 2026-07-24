@@ -8,6 +8,15 @@ All notable changes to VM Sentinel are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.1.2] — 2026-07-24
+### Fixed
+- **Release tooling:** `release.sh` stamped the package `SHA256` by replacing a
+  one-time placeholder, so the *second* release kept the previous release's hash
+  (version updated, checksum did not) — an install would fail checksum
+  verification. The stamper now rewrites the whole `sha256`/`version` entity
+  lines every time, and `build-release.yml` fails the run if the stamped `.plg`
+  hash does not match the built `.txz`. (The 0.1.1 hook fix is carried forward.)
+
 ## [0.1.1] — 2026-07-24
 ### Fixed
 - **Critical:** the installed libvirt hook could not be executed
@@ -54,6 +63,7 @@ All notable changes to VM Sentinel are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/BGriffin63/unraid-vm-sentinel/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.2
 [0.1.1]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.1
 [0.1.0]: https://github.com/BGriffin63/unraid-vm-sentinel/releases/tag/v0.1.0

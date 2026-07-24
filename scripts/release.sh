@@ -17,8 +17,11 @@ SHA="$(cat "$TXZ.sha256")"
 
 echo "==> Stamping vm.sentinel.plg for v$VERSION"
 OUT="$ROOT/build/vm.sentinel.plg"
-sed -e "s/<!ENTITY version   \"[^\"]*\">/<!ENTITY version   \"${VERSION}\">/" \
-    -e "s/REPLACE_WITH_TXZ_SHA256/${SHA}/" \
+# Match the whole entity line (not a one-time placeholder) so re-stamping works
+# on every release, whether the input still has the placeholder or a prior hash.
+sed -E \
+    -e "s/(<!ENTITY[[:space:]]+version[[:space:]]+\")[^\"]*(\")/\1${VERSION}\2/" \
+    -e "s/(<!ENTITY[[:space:]]+sha256[[:space:]]+\")[^\"]*(\")/\1${SHA}\2/" \
     "$ROOT/vm.sentinel.plg" > "$OUT"
 
 echo "==> Release artifacts in build/:"

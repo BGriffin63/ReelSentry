@@ -22,6 +22,14 @@ jobs:
           bash scripts/package.sh
           bash scripts/validate.sh
           bash scripts/release.sh
+          # SAFETY GATE: the SHA256 in the stamped .plg MUST match the built .txz,
+          # or an install would fail checksum verification. Fail the release if not.
+          plg_sha=$(grep -oE 'sha256[[:space:]]+"[a-f0-9]{64}"' build/vm.sentinel.plg | grep -oE '[a-f0-9]{64}')
+          txz_sha=$(cat build/*.txz.sha256)
+          if [ "$plg_sha" != "$txz_sha" ]; then
+            echo "FATAL: stamped .plg sha ($plg_sha) != txz sha ($txz_sha)"; exit 1
+          fi
+          echo "checksum match verified: $plg_sha"
           # Promote the stamped manifest to the repo root so installs from main
           # carry the correct version and SHA256.
           cp build/vm.sentinel.plg vm.sentinel.plg
