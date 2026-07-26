@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Containers>
+<PluginURL>https://raw.githubusercontent.com/BGriffin63/ReelSentry/main/reelsentry.plg</PluginURL>
+<PluginAuthor>BGriffin63</PluginAuthor>
+<Beta>True</Beta>
+<Category>Tools:Utilities</Category>
+<Name>ReelSentry</Name>
+<Description>
+ReelSentry monitors your Unraid virtual machines and tells you when something changes — a VM starts, stops, shuts down, crashes, pauses, resumes, or reboots. It watches VM lifecycle events through a namespaced libvirt hook that coexists safely with other plugins, records a local event history, and sends alerts through Unraid's native notification system and/or a Discord webhook (no bot required). Optional agentless health checks (ICMP ping, TCP port, QEMU guest agent) tell you when a VM is running but not actually responding, with anti-spam thresholds. Fail-open by design: a problem inside ReelSentry can never stop a VM from starting or changing state. No telemetry, no inbound ports, no VM XML changes. ReelSentry is an independent community project and is not affiliated with or endorsed by Lime Technology, Inc.
+</Description>
+<Support>https://github.com/BGriffin63/ReelSentry/issues</Support>
+<Project>https://github.com/BGriffin63/ReelSentry</Project>
+<Icon>https://raw.githubusercontent.com/BGriffin63/ReelSentry/main/assets/reelsentry-128.png</Icon>
+</Containers>

@@ -7,10 +7,10 @@ submission. Search the repo for each placeholder token and replace it.
 
 | Placeholder | Meaning | Files |
 |-------------|---------|-------|
-| `YOUR_GITHUB_USERNAME` | Your GitHub user/org | `reelsentry.plg`, `templates/*.xml`, `README.md`, docs |
-| `YOUR_DISPLAY_NAME` | Your public maintainer name | `LICENSE`, `reelsentry.plg`, `templates/*.xml` |
-| `YOUR_SUPPORT_THREAD_URL` | Unraid forum support thread | `reelsentry.plg`, `templates/*.xml`, `README.md`, `docs/SUPPORT.md` |
-| `YOUR_PROJECT_URL` | Project home (repo or site) | `templates/*.xml` |
+| `YOUR_GITHUB_USERNAME` | Your GitHub user/org | `reelsentry.plg`, `ca_profile.xml`, `reelsentry.xml`, `README.md`, docs |
+| `YOUR_DISPLAY_NAME` | Your public maintainer name | `LICENSE`, `reelsentry.plg`, `ca_profile.xml`, `reelsentry.xml` |
+| `YOUR_SUPPORT_THREAD_URL` | Unraid forum support thread | `reelsentry.plg`, `ca_profile.xml`, `reelsentry.xml`, `README.md`, `docs/SUPPORT.md` |
+| `YOUR_PROJECT_URL` | Project home (repo or site) | `ca_profile.xml`, `reelsentry.xml` |
 
 Quick find:
 ```bash

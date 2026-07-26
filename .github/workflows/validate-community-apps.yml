@@ -12,18 +12,19 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install xmllint
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
-      - name: Validate .plg and CA templates are well-formed XML
+      - name: Validate .plg and CA files are well-formed XML
         run: |
           xmllint --noout reelsentry.plg
-          xmllint --noout templates/reelsentry.xml
-          xmllint --noout templates/ca_profile.xml
-      - name: Check required CA fields are present
+          xmllint --noout reelsentry.xml
+          xmllint --noout ca_profile.xml
+      - name: Check required CA fields are present (root-level, per ca.unraid.net/submit)
         run: |
           set -e
-          for field in Name Repository PluginURL Category Icon MinVer Overview; do
-            grep -q "<$field>" templates/reelsentry.xml || { echo "Missing <$field> in CA template"; exit 1; }
+          for field in Name PluginURL Category Icon Support Description; do
+            grep -q "<$field>" reelsentry.xml || { echo "Missing <$field> in reelsentry.xml"; exit 1; }
           done
+          grep -q '<Profile>' ca_profile.xml || { echo "ca_profile.xml missing <Profile>"; exit 1; }
           grep -q 'min="7.2.0"' reelsentry.plg || { echo ".plg missing min=7.2.0"; exit 1; }
-          echo "CA template fields present."
+          echo "CA template + profile fields present."
       # NOTE (maintainer): when CA publishes an official schema/validator, add it
       # here. This job only checks well-formedness + required fields.

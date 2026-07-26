@@ -2,7 +2,7 @@
 
 > Field names and the submission flow evolve. **[VERIFY]** each step against the
 > current Community Applications (CA) documentation and the CA appfeed schema
-> before submitting. `templates/reelsentry.xml` and `templates/ca_profile.xml`
+> before submitting. `reelsentry.xml` and `ca_profile.xml`
 > use the current public reference and must pass CA validation/scanning.
 
 ## 1. Repository prerequisites
