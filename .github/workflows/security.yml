@@ -9,7 +9,7 @@ jobs:
   secret-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: gitleaks (secret detection)
@@ -21,7 +21,7 @@ jobs:
   codeql-note:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Security tests (injection / webhook)
         run: bash tests/security/test_injection.sh && bash tests/security/test_webhook_discord.sh
       # NOTE (maintainer): CodeQL supports the JS in the WebGUI; shell/PHP here are
