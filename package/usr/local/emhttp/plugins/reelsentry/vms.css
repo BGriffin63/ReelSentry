@@ -1,23 +1,79 @@
-/* ReelSentry WebGUI styling — intentionally light; inherits Unraid theme.
+/* ReelSentry WebGUI styling — theme-agnostic: works on Unraid's white, black,
+   azure and gray themes. Avoids assuming a light background; colored elements use
+   colored text + a subtle tint + a colored border so they read on any backdrop.
    SPDX-License-Identifier: MIT */
 .vms-wrap { max-width: 1100px; }
+
 .vms-cards { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 18px; }
-.vms-card { flex: 1 1 160px; border: 1px solid rgba(128,128,128,.3); border-radius: 8px; padding: 12px 14px; }
+.vms-card {
+  flex: 1 1 160px;
+  border: 1px solid rgba(128,128,128,.35);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: rgba(128,128,128,.06);
+}
 .vms-card .n { font-size: 1.6em; font-weight: 600; line-height: 1.1; }
 .vms-card .l { font-size: .85em; opacity: .75; }
-.vms-badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: .8em; }
-.vms-ok    { background: rgba(46,204,113,.18); }
-.vms-warn  { background: rgba(243,156,18,.18); }
-.vms-crit  { background: rgba(231,76,60,.20); }
+
+/* Badges — colored text is legible on both light and dark themes. */
+.vms-badge {
+  display: inline-block;
+  padding: 1px 9px;
+  border-radius: 10px;
+  font-size: .8em;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.vms-ok   { color: #29a35a; background: rgba(46,204,113,.14); border-color: rgba(46,204,113,.45); }
+.vms-warn { color: #d98a0b; background: rgba(243,156,18,.16); border-color: rgba(243,156,18,.5); }
+.vms-crit { color: #e0483b; background: rgba(231,76,60,.16); border-color: rgba(231,76,60,.5); }
 .vms-muted { opacity: .6; }
-.vms-flash { display: none; padding: 3px 10px; border-radius: 6px; margin-left: 10px; font-size: .9em; }
-.vms-flash.vms-ok  { background: rgba(46,204,113,.2); }
-.vms-flash.vms-err { background: rgba(231,76,60,.25); }
-.vms-vm { border: 1px solid rgba(128,128,128,.25); border-radius: 8px; margin: 8px 0; }
+
+/* Callout banner (e.g. "monitoring is off"). Strong left border reads on any theme. */
+.vms-banner {
+  display: block;
+  padding: 12px 16px;
+  margin: 4px 0 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(128,128,128,.3);
+  border-left-width: 4px;
+  background: rgba(128,128,128,.08);
+  font-size: .95em;
+}
+.vms-banner.vms-warn { border-left-color: #d98a0b; background: rgba(243,156,18,.10); color: inherit; }
+.vms-banner.vms-ok   { border-left-color: #29a35a; background: rgba(46,204,113,.10); color: inherit; }
+.vms-banner a { font-weight: 600; }
+
+/* Inline flash (save/test feedback). */
+.vms-flash {
+  display: none;
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-left: 10px;
+  font-size: .9em;
+  border: 1px solid transparent;
+}
+.vms-flash.vms-ok  { color: #29a35a; background: rgba(46,204,113,.14); border-color: rgba(46,204,113,.45); }
+.vms-flash.vms-err { color: #e0483b; background: rgba(231,76,60,.16); border-color: rgba(231,76,60,.5); }
+
+.vms-vm {
+  border: 1px solid rgba(128,128,128,.3);
+  border-radius: 8px;
+  margin: 8px 0;
+  background: rgba(128,128,128,.05);
+}
 .vms-vm > summary { cursor: pointer; padding: 10px 12px; font-weight: 600; }
 .vms-vm .body { padding: 4px 14px 14px; }
 .vms-uuid { font-family: monospace; font-size: .8em; opacity: .6; }
+
 table.vms-tbl { width: 100%; border-collapse: collapse; }
-table.vms-tbl th, table.vms-tbl td { text-align: left; padding: 6px 8px; border-bottom: 1px solid rgba(128,128,128,.2); font-size: .9em; }
-.vms-nonaffiliation { font-size: .8em; opacity: .6; margin-top: 24px; }
+table.vms-tbl th, table.vms-tbl td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(128,128,128,.25);
+  font-size: .9em;
+}
+table.vms-tbl th { opacity: .8; font-weight: 600; }
+
+.vms-nonaffiliation { font-size: .8em; opacity: .55; margin-top: 24px; }
 .vms-help { font-size: .85em; opacity: .7; margin: 2px 0 8px; }

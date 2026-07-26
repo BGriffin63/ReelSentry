@@ -15,9 +15,9 @@ foreach ($inv as $uuid => $name) {
 }
 ?>
 <?php if (!(int)$cfg['monitoring_enabled']): ?>
-  <blockquote class="vms-badge vms-warn" style="display:block;padding:10px 14px;">
+  <div class="vms-banner vms-warn">
     Monitoring is <b>off</b>. Turn it on in the <b>Notifications</b> tab after choosing what to watch.
-  </blockquote>
+  </div>
 <?php endif; ?>
 
 <div class="vms-cards">

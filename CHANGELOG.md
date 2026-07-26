@@ -8,6 +8,14 @@ All notable changes to ReelSentry are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.2.1] — 2026-07-24
+### Fixed
+- **WebGUI was hard to read on Unraid's dark themes.** The stylesheet assumed a
+  light background. It's now theme-agnostic: badges, banners, and flash messages
+  use colored text + a subtle tint + a colored border (legible on the white,
+  black, azure, and gray themes), and the "monitoring off" notice is a proper
+  callout instead of a faint badge.
+
 ## [0.2.0] — 2026-07-24
 ### Changed
 - **Rebranded VM Sentinel → ReelSentry** for a consistent product family
@@ -148,7 +156,8 @@ All notable changes to ReelSentry are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/ReelSentry/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/BGriffin63/ReelSentry/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.1
 [0.2.0]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.0
 [0.1.8]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.8
 [0.1.7]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.7
