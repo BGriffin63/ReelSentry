@@ -8,14 +8,14 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "reelsentry">
   <!ENTITY author    "BGriffin63">
-  <!ENTITY version   "0.2.2">
+  <!ENTITY version   "0.2.3">
   <!ENTITY launch    "Settings/ReelSentry">
   <!ENTITY pluginURL "https://raw.githubusercontent.com/BGriffin63/ReelSentry/main/reelsentry.plg">
   <!ENTITY gitURL    "https://github.com/BGriffin63/ReelSentry">
   <!ENTITY pkgName   "reelsentry-&version;-x86_64-1.txz">
   <!ENTITY packageURL "&gitURL;/releases/download/v&version;/&pkgName;">
   <!ENTITY pkgDir    "/boot/config/plugins/&name;">
-  <!ENTITY sha256    "7f9bc9cb79054c71d7a3aff811057ed74e14c9c2625d5b09be8aacfa80366ab4">
+  <!ENTITY sha256    "bd519149912cdb4e2a94edf64fa39bc08c1d98c03aab76b975aaa5221e6a43a2">
 ]>
 
 <PLUGIN name="&name;"
