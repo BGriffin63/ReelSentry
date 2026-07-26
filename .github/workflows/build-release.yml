@@ -10,7 +10,7 @@ jobs:
     steps:
       # Check out the main branch (not the detached tag) so we can commit the
       # stamped .plg back to it. The tag == main HEAD at tag time.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
           fetch-depth: 0
