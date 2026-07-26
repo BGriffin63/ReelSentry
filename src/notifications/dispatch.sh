@@ -21,7 +21,7 @@ notify_dispatch() {
         # Global enable gates.
         case "$provider" in
             native)  [ "$(config_get native_enabled 1)" = "1" ] || continue ;;
-            discord) [ "$(config_get discord_enabled 0)" = "1" ] || continue ;;
+            discord) discord_configured || continue ;;   # send if a valid webhook is set
         esac
         notify_provider_registered "$provider" || continue
         line=$("provider_${provider}_send" 2>/dev/null)

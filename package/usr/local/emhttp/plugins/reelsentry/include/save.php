@@ -19,7 +19,10 @@ switch ($action) {
 case 'save_global':
     $cfg = vms_read_config();
     // Whitelist of scalar global keys we accept from the form.
-    $bools = ['monitoring_enabled','native_enabled','discord_enabled','quiet_enabled',
+    // Note: discord_enabled is intentionally NOT here — Discord is gated by
+    // whether a valid webhook is configured (see save_webhook / dispatch.sh),
+    // not by a separate toggle that users forget to enable.
+    $bools = ['monitoring_enabled','native_enabled','quiet_enabled',
               'quiet_bypass_critical','debug','notify_start','notify_stop','notify_shutdown',
               'notify_crash','notify_pause','notify_resume','notify_reboot',
               'notify_health_fail','notify_health_recover'];

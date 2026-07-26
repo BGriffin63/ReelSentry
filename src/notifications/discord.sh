@@ -39,6 +39,14 @@ discord_read_webhook() {
     printf '%s' "$raw"
 }
 
+# discord_configured: 0 if a VALID Discord webhook is stored. Used by the
+# dispatcher to decide whether live events go to Discord — configuring a webhook
+# is the enable (no separate toggle to forget).
+discord_configured() {
+    local url; url=$(discord_read_webhook) || return 1
+    valid_discord_webhook "$url"
+}
+
 # discord_field: build one embed field object.  <name> <value> [inline]
 _discord_field() {
     local name=$1 value=$2 inline=${3:-true}

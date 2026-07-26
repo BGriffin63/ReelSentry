@@ -18,7 +18,7 @@ unraid_version() { sed -n 's/^version="\?\([^"]*\)"\?/\1/p' /etc/unraid-version 
 status_json() {
     local hook proc health libv perms qcount dropped hist
     hook=$(hook_status 2>/dev/null || echo unknown)
-    proc=$(_svc processor); health=$(_svc healthcheck)
+    proc=$(_svc processor); health=$(_svc health)   # service writes health.pid
     virsh_available && libv=true || libv=false
     perms=$(perm_of "$VMS_SECRETS_FILE")
     qcount=$(spool_count 2>/dev/null || echo 0)
@@ -58,7 +58,7 @@ bundle() {
     local hf; hf=$(history_path 2>/dev/null) && [ -f "$hf" ] && tail -n 500 "$hf" | redact_stream > "$dir/history.tail.jsonl"
     # Environment facts.
     { echo "plugin_version=$(version)"; echo "unraid_version=$(unraid_version)";
-      echo "date=$(vms_now_iso)"; hook_status; _svc processor; _svc healthcheck; } > "$dir/env.txt"
+      echo "date=$(vms_now_iso)"; hook_status; _svc processor; _svc health; } > "$dir/env.txt"
 
     local out; out="/tmp/reelsentry-diagnostics-$(date +%Y%m%d-%H%M%S).tar.gz"
     tar -C "$dir" -czf "$out" . 2>/dev/null

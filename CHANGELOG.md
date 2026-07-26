@@ -8,6 +8,17 @@ All notable changes to ReelSentry are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.2.2] — 2026-07-25
+### Fixed
+- **Discord alerts didn't fire on live VM up/down events** (the test button
+  worked, live didn't). The live dispatcher gated Discord on a separate
+  `discord_enabled` toggle that was easy to leave off; now **Discord sends on
+  live events whenever a valid webhook is configured** — configuring the webhook
+  is the enable, clearing it is the disable. Removed the confusing "Enable
+  Discord webhook alerts" checkbox. Fixes existing installs with no reconfigure.
+- **Diagnostics falsely showed "Health service: stopped."** The service writes
+  `health.pid` but diagnostics read `healthcheck.pid`; it now reads the right file.
+
 ## [0.2.1] — 2026-07-24
 ### Fixed
 - **WebGUI was hard to read on Unraid's dark themes.** The stylesheet assumed a
@@ -156,7 +167,8 @@ All notable changes to ReelSentry are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/ReelSentry/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/BGriffin63/ReelSentry/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.2
 [0.2.1]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.1
 [0.2.0]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.0
 [0.1.8]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.1.8

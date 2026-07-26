@@ -34,7 +34,8 @@ $cc = function($k,$d=0) use ($cfg){ return (int)($cfg[$k] ?? $d) ? 'checked':'';
   <span id="nflash" class="vms-flash"></span>
 
   <h3>Discord webhook</h3>
-  <label><input type="checkbox" name="discord_enabled" value="1" <?=$cc('discord_enabled')?>> Enable Discord webhook alerts</label>
+  <p class="vms-help">Discord alerts are sent automatically whenever a valid webhook is configured
+  (in the <b>Discord webhook URL</b> section below). Clear the webhook to turn Discord off.</p>
   <label>Display name override: <input type="text" name="discord_username" value="<?=h($cfg['discord_username']??'ReelSentry')?>"></label>
   <label>Avatar URL (https): <input type="text" name="discord_avatar" value="<?=h($cfg['discord_avatar']??'')?>"></label>
   <label>Mention role ID: <input type="text" name="discord_mention_role" value="<?=h($cfg['discord_mention_role']??'')?>"></label>

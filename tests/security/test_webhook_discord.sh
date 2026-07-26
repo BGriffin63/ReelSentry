@@ -40,4 +40,12 @@ printf 'G\tdiscord_enabled\t1\n' >> "$VMS_CONFIG_SNAPSHOT"
 res=$(provider_discord_send)
 assert_contains "invalid webhook rejected" "$res" "invalid"
 
+# discord_configured gates LIVE dispatch on webhook presence+validity (no toggle).
+printf '{"discord_webhook":"https://discord.com/api/webhooks/123/GoodToken_-abc"}' > "$VMS_SECRETS_FILE"
+assert_true  "discord_configured true with valid webhook"   "discord_configured"
+printf '{"discord_webhook":"http://evil.example/api/webhooks/1/x"}' > "$VMS_SECRETS_FILE"
+assert_false "discord_configured false with invalid webhook" "discord_configured"
+rm -f "$VMS_SECRETS_FILE"
+assert_false "discord_configured false with no webhook"      "discord_configured"
+
 vms_test_summary
