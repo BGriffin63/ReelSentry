@@ -8,6 +8,15 @@ All notable changes to ReelSentry are documented here. The format is based on
 - Complete the manual Unraid 7.2 test matrix (`docs/TESTING.md`).
 - Resolve remaining `docs/RESEARCH.md` §7 hardware-verification items.
 
+## [0.2.3] — 2026-07-25
+### Fixed
+- **Updates left the old background processor running**, so fixes to the live
+  notification path (like 0.2.2's Discord change) didn't take effect until a
+  reboot or manual service restart — the plugin's install script called the
+  service with `start`, which skips when the daemon is already alive. It now
+  calls `restart`, so every upgrade swaps in the newly-installed code. (This is
+  why live Discord alerts stayed broken after updating even though the fix was on
+  disk.)
 ## [0.2.2] — 2026-07-25
 ### Fixed
 - **Discord alerts didn't fire on live VM up/down events** (the test button
@@ -167,7 +176,8 @@ All notable changes to ReelSentry are documented here. The format is based on
   platform assumptions are flagged **[VERIFY]** (see `docs/RESEARCH.md`).
 - No automatic VM restart/recovery (intentionally out of scope for v1).
 
-[Unreleased]: https://github.com/BGriffin63/ReelSentry/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/BGriffin63/ReelSentry/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.3
 [0.2.2]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.2
 [0.2.1]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.1
 [0.2.0]: https://github.com/BGriffin63/ReelSentry/releases/tag/v0.2.0

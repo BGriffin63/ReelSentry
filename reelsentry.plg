@@ -67,9 +67,11 @@
       upgradepkg --install-new "&pkgDir;/&pkgName;" || installpkg "&pkgDir;/&pkgName;"
 
       PLUGIN_ROOT="/usr/local/emhttp/plugins/&name;"
-      # Migrate config if needed, install the libvirt hook idempotently, start services.
+      # RESTART (not start) so an upgrade replaces the long-running processor/health
+      # loops with the newly-installed code — 'start' would skip because the old
+      # daemon is still alive, leaving stale code running after every update.
       [ -x "$PLUGIN_ROOT/services/reelsentry-service" ] &amp;&amp; \
-        bash "$PLUGIN_ROOT/services/reelsentry-service" start || true
+        bash "$PLUGIN_ROOT/services/reelsentry-service" restart || true
 
       echo ""
       echo "ReelSentry &version; installed."
